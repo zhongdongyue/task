@@ -17,9 +17,9 @@ public interface UserMapper {
 
     User selectById(String id);
 
-    User selectByAccountAndPassword(@Param("account") String account, @Param("password") String password);
+    User selectByAccountAndPassword(@Param("username") String account, @Param("password") String password);
 
-    User selectByAccount(@Param("account") String account);
+    User selectByAccount(@Param("username") String account);
 
     int updateById(User record);
 

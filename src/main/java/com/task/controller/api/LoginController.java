@@ -33,7 +33,7 @@ public class LoginController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public Object login(HttpSession session, String username, String password) {
-//        User user = userService.getByAccount(username);
+        User user = userService.getByAccount(username);
 //        if (user == null) {
 //            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"登录用户不存在:" + username);
 //        }
