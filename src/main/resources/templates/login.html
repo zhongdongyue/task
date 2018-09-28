@@ -62,6 +62,7 @@
                 data: data.field,
                 success: function (data, textStatus, jqXHR) {
                     if (data.result == "ok") {
+                        localStorage.setItem("login", true)
                         location.href='./index'
                     } else {
                         alert(JSON.stringify(data));
