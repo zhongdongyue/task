@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.task.dao.mapper.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.task.entity.Task">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="receive_user_id" jdbcType="VARCHAR" property="receiveUserId"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.task.entity.Task">
+    insert into task (id, `name`, state,user_id,create_time,update_time,receive_time,description
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
+            #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{receiveTime,jdbcType=TIMESTAMP},#{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.task.entity.Task">
+    update task
+    set `name` = #{name,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR}
+      receive_user_id = #{receiveUserId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    from task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    from task
+  </select>
+
+  <!--查看7天内任务-->
+  <select id="selectPending" resultMap="BaseResultMap">
+    select id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    from task  where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(create_time) AND
+    state = 0
+  </select>
+
+  <!--查看用户20分钟内领取的任务-->
+  <select id="selectByReceiveTime" resultMap="BaseResultMap">
+     SELECT id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+     FROM task
+     WHERE receive_time >= now()-interval 20 MINUTE AND user_id = #{userId,jdbcType=VARCHAR}
+   </select>
+
+  <!--查看用户下任务-->
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    SELECT id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    FROM task
+    WHERE user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户当天领取了多少任务-->
+  <select id="selectByDays" resultMap="BaseResultMap">
+    select id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    from task
+    where to_days(receive_time) = to_days(now()) AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>

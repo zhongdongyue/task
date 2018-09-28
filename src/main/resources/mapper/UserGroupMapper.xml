@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.task.dao.mapper.UserGroupMapper">
+  <resultMap id="BaseResultMap" type="com.task.entity.UserGroup">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="org_id" jdbcType="VARCHAR" property="orgId"/>
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <resultMap id="UserGroupRelationMap" type="com.task.entity.UserGroupRelation">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    <result column="user_group_id" jdbcType="VARCHAR" property="userGroupId"/>
+  </resultMap>
+
+  <sql id="Columns">
+    user_group.id, user_group.`name`, user_group.description, user_group.create_time,user_group.org_id
+  </sql>
+
+  <delete id="delete" parameterType="java.lang.String">
+    delete from user_group
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteUserRelation">
+    DELETE FROM user_group_relation WHERE user_id=#{userId} AND user_group_id=#{groupId}
+  </delete>
+
+    <delete id="deleteUserRelationByUserGroupId">
+      DELETE FROM user_group_relation WHERE user_group_id=#{groupId}
+    </delete>
+
+    <insert id="insert" parameterType="com.task.entity.UserGroup">
+    insert into user_group (id, org_id, `name`, description,
+      create_time)
+    values (#{id,jdbcType=VARCHAR},#{orgId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="addUserRelation" useGeneratedKeys="true" keyProperty="id" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT REPLACE(UUID(),'-','')
+    </selectKey>
+    insert into user_group_relation (id, user_id, user_group_id)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.task.entity.UserGroup">
+    update user_group
+    set `name` = #{name,jdbcType=VARCHAR},
+      org_id = #{orgId, jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Columns"/>
+    from user_group
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="Columns"/>
+    from user_group
+  </select>
+
+  <select id="selectByOrgId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id,org_id, `name`, description, create_time
+    from user_group
+    where org_id = #{orgId,jdbcType=VARCHAR}
+  </select>
+
+    <select id="selectByUserId" parameterType="string" resultMap="BaseResultMap">
+      SELECT <include refid="Columns"/> FROM user_group
+      INNER JOIN user_group_relation ra ON ra.user_group_id=user_group.id
+      WHERE ra.user_id=#{userId}
+    </select>
+
+    <select id="selectByName" parameterType="string" resultMap="BaseResultMap">
+      SELECT <include refid="Columns"/> FROM user_group
+      WHERE name = #{name}
+    </select>
+
+    <select id="selectRelationByUserIdAndGroupId" resultMap="UserGroupRelationMap">
+      SELECT * FROM user_group_relation WHERE user_id = #{userId} AND user_group_id = #{userGroupId}
+    </select>
+</mapper>
