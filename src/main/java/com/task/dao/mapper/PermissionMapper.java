@@ -2,8 +2,9 @@ package com.task.dao.mapper;
 
 import java.util.List;
 
-import com.task.entity.Permission;
 import org.springframework.stereotype.Repository;
+
+import com.task.entity.Permission;
 
 @Repository
 public interface PermissionMapper {

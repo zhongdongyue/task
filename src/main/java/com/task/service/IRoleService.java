@@ -1,8 +1,8 @@
 package com.task.service;
 
-import com.task.entity.Role;
-
 import java.util.List;
+
+import com.task.entity.Role;
 
 /**
  * CLASS_NAME

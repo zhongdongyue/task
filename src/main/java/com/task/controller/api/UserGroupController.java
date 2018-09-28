@@ -69,14 +69,15 @@ public class UserGroupController extends BaseController {
         userGroupService.removeMember(groupId, userIds);
     }
 
-//    /**
-//     * 校验用户组名称
-//     * @param name
-//     * @return
-//     */
-//    @RequestMapping(value = "name/validation", method = RequestMethod.GET)
-//    @ResponseBody
-//    public ValidateResult validateName(String name) {
-//        return new ValidateResult(name, userGroupService.validateName(name));
-//    }
+    /**
+     * 校验用户组名称
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "name/validation", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean validateName(String name) {
+        return userGroupService.validateName(name);
+    }
+
 }

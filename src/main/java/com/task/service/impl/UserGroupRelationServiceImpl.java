@@ -1,10 +1,11 @@
 package com.task.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.task.dao.mapper.UserGroupRelationMapper;
 import com.task.entity.UserGroupRelation;
 import com.task.service.IUserGroupRelationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * CLASS_NAME

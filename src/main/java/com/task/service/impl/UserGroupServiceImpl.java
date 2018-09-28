@@ -3,6 +3,10 @@ package com.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.task.dao.mapper.UserGroupMapper;
 import com.task.dao.mapper.UserGroupRelationMapper;
 import com.task.domain.ResponseCode;
@@ -12,9 +16,6 @@ import com.task.entity.UserGroupRelation;
 import com.task.exception.BusinessException;
 import com.task.service.IUserGroupService;
 import com.task.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -80,4 +81,18 @@ public class UserGroupServiceImpl implements IUserGroupService {
     public UserGroup getById(String id) {
         return userGroupMapper.selectById(id);
     }
+
+    @Override
+    public UserGroup getByName(String name) {
+        return userGroupMapper.selectByName(name);
+    }
+
+    /**
+     * 查询所有的用户组
+     * @return
+     */
+    public List<UserGroup> getAll(){
+        return userGroupMapper.selectAll();
+    }
+
 }

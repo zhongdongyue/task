@@ -3,17 +3,20 @@ package com.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.task.dao.mapper.RoleMapper;
 import com.task.dao.mapper.UserGroupMapper;
+import com.task.dao.mapper.UserGroupRelationMapper;
 import com.task.dao.mapper.UserMapper;
 import com.task.domain.ResponseCode;
 import com.task.entity.User;
 import com.task.entity.UserGroup;
+import com.task.entity.UserGroupRelation;
 import com.task.exception.BusinessException;
 import com.task.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -35,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private UserGroupRelationMapper userGroupRelationMapper;
 
     private static final String USER_NODE_TYPE = "user";
 
@@ -103,6 +109,10 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
         userMapper.insert(user);
+        UserGroupRelation userGroupRelation = new UserGroupRelation();
+        userGroupRelation.setUserId(user.getId());
+        userGroupRelation.setUserGroupId("1");
+        userGroupRelationMapper.insert(userGroupRelation);
     }
 
     @Override

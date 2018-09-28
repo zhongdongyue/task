@@ -1,9 +1,9 @@
 package com.task.service;
 
+import java.util.List;
+
 import com.task.entity.User;
 import com.task.entity.UserGroup;
-
-import java.util.List;
 
 
 /**
@@ -59,4 +59,11 @@ public interface IUserGroupService {
      * @return  用户组
      */
     UserGroup getById(String id);
+
+    /**
+     * 根据名称获取用户组信息
+     * @param name 组名
+     * @return
+     */
+    UserGroup getByName(String name);
 }

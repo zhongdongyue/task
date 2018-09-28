@@ -42,7 +42,7 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void create(@RequestBody User user, String password,String orgId) {
+    public void create(@RequestBody User user, String password, String orgId) {
         user.setPassword(password);
         userService.create(user);
     }

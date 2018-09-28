@@ -74,4 +74,11 @@
     from task
     where to_days(receive_time) = to_days(now()) AND user_id = #{userId,jdbcType=VARCHAR}
   </select>
+
+  <!--查看用户下是否有未完成任务-->
+  <select id="selectUncomplete" resultMap="BaseResultMap">
+    SELECT id, `name`, state,user_id,create_time,update_time,receive_time,description,receive_user_id
+    FROM task
+    WHERE user_id = #{userId,jdbcType=VARCHAR} AND state != 8
+  </select>
 </mapper>

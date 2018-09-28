@@ -1,8 +1,8 @@
 package com.task.service;
 
-import com.task.entity.Task;
-
 import java.util.List;
+
+import com.task.entity.Task;
 
 /**
  * CLASS_NAME
@@ -46,4 +46,24 @@ public interface ITaskService {
      * @return
      */
     List<Task>selectByDays(String userId);
+
+    /**
+     * 完成任务
+     * @param id
+     */
+    void complete(String id);
+
+    /**
+     * 申请领取任务
+     * @param id
+     */
+    void apply(String id);
+
+    /**
+     * 处理任务申请
+     * @param id
+     * @param state
+     */
+    void approve(String id, int state);
+
 }

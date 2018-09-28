@@ -35,7 +35,43 @@ public class TaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "pend",method = RequestMethod.GET)
-    public List<Task> getPendind(){
-        return taskService.selectPending();
+    public ResponseData<List<Task>> getPending(){
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.selectPending());
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST)
+    public void insert(Task task){
+        taskService.insert(task);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PUT)
+    public void update(Task task){
+        taskService.updateByPrimaryKey(task);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "complete",method = RequestMethod.POST)
+    public void complete(String id){
+        taskService.complete(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "apply",method = RequestMethod.POST)
+    public void apply(String id){
+        taskService.apply(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "approve",method = RequestMethod.POST)
+    public void approve(String id ,int state){
+        taskService.approve(id,state);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void delete(String id){
+        taskService.deleteByPrimaryKey(id);
     }
 }

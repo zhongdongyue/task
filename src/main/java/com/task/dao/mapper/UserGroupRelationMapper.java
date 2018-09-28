@@ -2,10 +2,10 @@ package com.task.dao.mapper;
 
 import java.util.List;
 
-import com.task.entity.UserGroupRelation;
 import org.apache.ibatis.annotations.Param;
-
 import org.springframework.stereotype.Repository;
+
+import com.task.entity.UserGroupRelation;
 
 /**
  * CLASS_NAME

@@ -2,8 +2,9 @@ package com.task.dao.mapper;
 
 import java.util.List;
 
-import com.task.entity.RolePermission;
 import org.springframework.stereotype.Repository;
+
+import com.task.entity.RolePermission;
 
 @Repository
 public interface RolePermissionMapper {

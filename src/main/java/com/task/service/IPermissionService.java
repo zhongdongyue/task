@@ -1,10 +1,10 @@
 package com.task.service;
 
 
+import java.util.List;
+
 import com.task.entity.Permission;
 import com.task.entity.User;
-
-import java.util.List;
 
 /**
  * CLASS_NAME

@@ -3,10 +3,10 @@ package com.task.dao.mapper;
 
 import java.util.List;
 
-import com.task.entity.Role;
 import org.apache.ibatis.annotations.Param;
-
 import org.springframework.stereotype.Repository;
+
+import com.task.entity.Role;
 
 @Repository
 public interface RoleMapper {
