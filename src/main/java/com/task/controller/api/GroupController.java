@@ -18,7 +18,7 @@ import com.task.domain.Pager;
  * @since since
  */
 @Controller
-@RequestMapping("userGroups")
+@RequestMapping("api/userGroups")
 public class GroupController extends BaseController {
 
     @Autowired

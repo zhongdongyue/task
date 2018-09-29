@@ -22,7 +22,7 @@ import java.util.List;
  * @since since
  */
 @Controller
-@RequestMapping("tasks")
+@RequestMapping("api/tasks")
 public class TaskController extends BaseController {
     @Autowired
     private ITaskService taskService;

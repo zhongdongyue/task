@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @since since
  */
 @Controller
-@RequestMapping("users")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
