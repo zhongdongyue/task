@@ -44,15 +44,60 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content,receiveTime
+    content,receive_time
     from task
     where id = #{id,jdbcType=VARCHAR}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap">
     select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content,receiveTime
+    content,receive_time
     from task
   </select>
+
+
+  <!--查看7天内任务-->
+  <select id="selectPending" resultMap="BaseResultMap">
+    select id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
+    content,receive_time
+    from task  where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(create_time) AND
+    state = 0
+  </select>
+
+
+  <!--查看用户20分钟内领取的任务-->
+  <select id="selectMinuteByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
+    content,receive_time
+    FROM task
+    WHERE receive_time >= now()-interval 20 MINUTE AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户下任务-->
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
+    content,receive_time
+    FROM task
+    WHERE user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户当天领取了多少任务-->
+  <select id="selectByDays" parameterType="java.lang.String" resultMap="BaseResultMap">
+     SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
+    content,receive_time
+    FROM task
+    where to_days(receive_time) = to_days(now()) AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户下是否有未完成任务-->
+  <select id="selectUncomplete" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
+    content,receive_time
+    FROM task
+    WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 2
+  </select>
+
 </mapper>
