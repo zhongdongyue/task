@@ -35,8 +35,8 @@ public class GroupController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Group userGroup(@RequestBody Group userGroup) {
-        return userGroupService.create(userGroup);
+    public ResponseData<Group> userGroup(@RequestBody Group userGroup) {
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,userGroupService.create(userGroup));
     }
 
     /**
@@ -44,8 +44,9 @@ public class GroupController extends BaseController {
      */
     @RequestMapping(value = "{groupId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable("groupId") String groupId) {
+    public ResponseData delete(@PathVariable("groupId") String groupId) {
         userGroupService.delete(groupId);
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     /**
@@ -72,8 +73,27 @@ public class GroupController extends BaseController {
      */
     @RequestMapping(value = "name/validation", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean validateName(String name) {
-        return userGroupService.validateName(name);
+    public ResponseData validateName(String name) {
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,userGroupService.validateName(name));
+    }
+
+    /**
+     * 分页查询所有用户组
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseData<Group> getAll(int page, int limit){
+        Pager pages = userGroupService.selectAllByPage(page,limit);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
     }
 
 }

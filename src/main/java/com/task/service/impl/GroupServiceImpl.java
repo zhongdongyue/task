@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.task.dao.mapper.GroupMapper;
+import com.task.dao.mapper.UserMapper;
+import com.task.domain.Pager;
+import com.task.domain.ResponseCode;
 import com.task.entity.Group;
 import com.task.entity.User;
+import com.task.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +26,9 @@ public class GroupServiceImpl implements IGroupService {
     @Autowired
     private GroupMapper groupMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public Group create(Group userGroup) {
         userGroup.setCreateTime(new Date());
@@ -30,6 +38,10 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     public void delete(String groupId) {
+        List<User> users = userMapper.selectByGroupId(1,1,groupId);
+        if(users!=null && !users.isEmpty()){
+            throw new BusinessException(ResponseCode.USER_GROUP_CAN_NOT_DELETE,"用户组下存在用户，无法删除");
+        }
         groupMapper.deleteByPrimaryKey(groupId);
     }
 
@@ -59,5 +71,11 @@ public class GroupServiceImpl implements IGroupService {
             groups.add(group);
             return groups;
         }
+    }
+
+    @Override
+    public Pager<Group> selectAllByPage(int pageNum, int pageSize) {
+        PageInfo<Group> sqlPage = new PageInfo<>(groupMapper.selectAllByPage(pageNum,pageSize));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
     }
 }

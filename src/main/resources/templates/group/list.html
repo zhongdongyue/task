@@ -19,8 +19,8 @@
 
 <body>
 <div class="weadmin-body">
-    <table id="LAY-user-list" lay-filter="LAY-user-list"></table>
-    <script type="text/html" id="table-user-list">
+    <table id="LAY-group-list" lay-filter="LAY-group-list"></table>
+    <script type="text/html" id="table-group-list">
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
     </script>
@@ -36,38 +36,34 @@
         var layer = layui.layer;
         var jquery = layui.jquery;
         table.render({
-            elem: "#LAY-user-list",
-            url: "/api/userGroups/${groupId}/users",
+            elem: "#LAY-group-list",
+            url: "/api/userGroups",
             page: true, //开启分页
             cols: [
                 [{
                     field: "id", width: 80, title: "ID", hide:true
                 }, {
-                    field: "username", title: "用户名"
+                    field: "name", title: "用户名"
                 }, {
-                    field: "phone", title: "手机号"
+                    field: "description", title: "描述"
                 }, {
-                    field: "groupName", title: "所属组"
-                }, {
-                    field: "roleDescription", title: "角色"
-                },{
-                    field: "createTime", title: "创建时间"  , templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
+                    field: "createTime", title: "创建时间" ,templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
                     title: "操作",
                     width: 150,
                     align: "center",
                     fixed: "right",
-                    toolbar: "#table-user-list"
+                    toolbar: "#table-group-list"
                 }]
             ],
             text: "对不起，加载出现异常！"
         });
-        table.on("tool(LAY-user-list)", function (e) {
+        table.on("tool(LAY-group-list)", function (e) {
             if ("del" === e.event) {
                 layer.confirm("确认删除？", function (t) {
                     jquery.ajax({
                         type: 'DELETE',
-                        url: "/api/users/" + e.data.id,
+                        url: "/api/userGroups/" + e.data.id,
                         success: function (data, textStatus, jqXHR) {
                             if (data.code == "200") {
                                 e.del(), layer.close(t)

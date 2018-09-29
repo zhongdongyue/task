@@ -1,6 +1,7 @@
 package com.task.service;
 
 
+import com.task.domain.Pager;
 import com.task.entity.Group;
 import com.task.entity.User;
 
@@ -53,4 +54,6 @@ public interface IGroupService {
      * @return
      */
     List<Group> selectByUserId(User user);
+
+    Pager<Group> selectAllByPage(int pageNum, int pageSize);
 }
