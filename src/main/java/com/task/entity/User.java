@@ -25,6 +25,8 @@ public class User {
 
     private String roleName;
 
+    private String roleDescription;
+
     public String getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class User {
         this.roleName = roleName;
     }
 
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -127,6 +137,7 @@ public class User {
                 ", updateTime=" + updateTime +
                 ", groupName='" + groupName + '\'' +
                 ", roleName='" + roleName + '\'' +
+                ", roleDescription='" + roleDescription + '\'' +
                 '}';
     }
 }

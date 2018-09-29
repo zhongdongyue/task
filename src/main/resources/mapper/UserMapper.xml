@@ -13,6 +13,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_description" jdbcType="VARCHAR" property="roleDescription" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
@@ -87,7 +88,8 @@
   </select>
 
   <select id="selectByGroupId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select u.id, u.username, u.`password`, u.phone, g.name AS group_name, r.name AS role_name,u.group_id, u.role_id ,u.`status`, u.create_time,
+    select u.id, u.username, u.`password`, u.phone, g.name AS group_name, r.name AS role_name,u.group_id, r.description AS role_description,
+     u.role_id ,u.`status`, u.create_time,
     u.update_time
     from user u
     LEFT JOIN `group`  g ON u.group_id = g.id
