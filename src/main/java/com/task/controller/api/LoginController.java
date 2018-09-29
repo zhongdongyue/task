@@ -4,11 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.task.domain.ResponseCode;
+import com.task.domain.ResponseData;
+import com.task.domain.ResponseMessage;
 import com.task.domain.SessionAttribute;
 import com.task.entity.User;
 import com.task.exception.BusinessException;
 import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,18 +37,17 @@ public class LoginController {
     @ResponseBody
     public Object login(HttpSession session, String username, String password) {
         User user = userService.getByName(username);
-        session.setAttribute("user",user);
-//        if (user == null) {
-//            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"登录用户不存在:" + username);
-//        }
-//        user = userService.getByAccountAndPwd(username, password);
-//        if (user == null) {
-//            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"用户名或密码不正确");
-//        }
-//        session.setAttribute(SessionAttribute.USER, user);
-//        session.setAttribute(SessionAttribute.USER_ID, user.getId());
-//        session.setAttribute(SessionAttribute.USER_NAME, user.getName());
-        return "{\"result\":\"ok\"}";
+        if (user == null) {
+            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"登录用户不存在:" + username);
+        }
+        user = userService.getByAccountAndPwd(username, password);
+        if (user == null) {
+            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"用户名或密码不正确");
+        }
+        session.setAttribute(SessionAttribute.USER, user);
+        session.setAttribute(SessionAttribute.USER_ID, user.getId());
+        session.setAttribute(SessionAttribute.USER_NAME, user.getUsername());
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,user);
     }
 
     /**

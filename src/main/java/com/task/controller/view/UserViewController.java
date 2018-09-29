@@ -1,9 +1,16 @@
 package com.task.controller.view;
 
 import com.task.controller.BaseController;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.jws.WebParam;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -24,8 +31,9 @@ public class UserViewController extends BaseController {
     }
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public String list() {
-        return "/user/list";
+    public ModelAndView list(@RequestParam(value = "groupId") String groupId, ModelMap map) {
+        map.put("groupId", groupId);
+        return new ModelAndView("/user/list", map);
     }
 
     @RequestMapping(value = "role", method = RequestMethod.GET)
