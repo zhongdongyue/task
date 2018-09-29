@@ -20,13 +20,26 @@ public class ResponseData<T> {
      */
     private String message;
 
+    private String msg;
+
     /**
      * 返回数据
      */
     private T data;
 
+    private int count;
+
+
     public ResponseData() {
         super();
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public Integer getCode() {
@@ -51,6 +64,14 @@ public class ResponseData<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     @Override
@@ -85,6 +106,23 @@ public class ResponseData<T> {
         response.setCode(code);
         response.setMessage(message);
         response.setData(obj);
+        return response;
+    }
+
+    /**
+     * 返回自定义信息、对象
+     *
+     * @param code    结果码
+     * @param message 信息
+     * @param obj     对象
+     * @return RestResponse
+     */
+    public static <T> ResponseData<T> success(Integer code, String message, T obj,int count) {
+        ResponseData<T> response = new ResponseData<>();
+        response.setCode(code);
+        response.setMessage(message);
+        response.setData(obj);
+        response.setCount(count);
         return response;
     }
 }

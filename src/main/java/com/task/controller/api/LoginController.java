@@ -40,8 +40,7 @@ public class LoginController {
         if (user == null) {
             throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"登录用户不存在:" + username);
         }
-        user = userService.getByAccountAndPwd(username, password);
-        if (user == null) {
+        if (userService.getByAccountAndPwd(username, password) == null) {
             throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"用户名或密码不正确");
         }
         session.setAttribute(SessionAttribute.USER, user);

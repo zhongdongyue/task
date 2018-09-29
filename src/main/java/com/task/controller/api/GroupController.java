@@ -1,11 +1,14 @@
 package com.task.controller.api;
 
 import com.task.controller.BaseController;
+import com.task.domain.ResponseData;
+import com.task.domain.ResponseMessage;
 import com.task.entity.Group;
 import com.task.entity.User;
 import com.task.service.IGroupService;
 import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.task.domain.Pager;
@@ -50,8 +53,15 @@ public class GroupController extends BaseController {
      */
     @RequestMapping(value = "{groupId}/users", method = RequestMethod.GET)
     @ResponseBody
-    public Pager<User> getUserGroupMembers(@PathVariable("groupId") String groupId, int pageNum, int pageSize) {
-         return userService.getPageByGroupId(pageNum,pageSize,groupId);
+    public ResponseData<User> getUserGroupMembers(@PathVariable("groupId") String groupId, int page, int limit) {
+         Pager pages = userService.getPageByGroupId(page,limit,groupId);
+         ResponseData responseData = new ResponseData();
+         responseData.setCount((int)pages.getTotalRow());
+         responseData.setData(pages.getRecords());
+         responseData.setCode(0);
+         responseData.setMessage(ResponseMessage.SUCCESS);
+         responseData.setMsg("");
+         return responseData;
     }
 
 

@@ -31,22 +31,35 @@
         var table = layui.table;
         table.render({
             elem: "#LAY-user-list",
-            url: "/api/user/list",
-            cols: [[{type: "checkbox", fixed: "left"}, {field: "id", width: 80, title: "ID", sort: !0}, {
-                field: "rolename",
-                title: "角色名"
-            }, {field: "limits", title: "拥有权限"}, {field: "descr", title: "具体描述"}, {
-                title: "操作",
-                width: 150,
-                align: "center",
-                fixed: "right",
-                toolbar: "#table-useradmin-admin"
-            }]],
+            url: "/api/userGroups/${groupId}/users",
+            page: true, //开启分页
+            cols: [
+                [{
+                    type: "checkbox", fixed: "left"
+                }, {
+                    field: "id", width: 80, title: "ID", sort: !0
+                }, {
+                    field: "username", title: "用户名"
+                }, {
+                    field: "phone", title: "手机号"
+                }, {
+                    field: "groupName", title: "所属组"
+                }, {
+                    field: "roleName", title: "角色"
+                },{
+                    field: "createTime", title: "创建时间"
+                },{
+                    title: "操作",
+                    width: 150,
+                    align: "center",
+                    fixed: "right",
+                    toolbar: "#table-useradmin-admin"
+                }]
+            ],
             text: "对不起，加载出现异常！"
         })
     });
 </script>
-<
-/body>
+</body>
 
-< /html>
+</html>

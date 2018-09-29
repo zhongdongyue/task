@@ -32,13 +32,8 @@ public class IndexViewController extends BaseController {
 
     @RequestMapping("index")
     public ModelAndView index(HttpSession session, ModelMap map) {
-//        User user = (User) session.getAttribute(SessionAttribute.USER);
-//        List<Group> groupList = groupService.selectByUserId(user);
-        List<Group> groupList = new ArrayList<>();
-        Group group = new Group();
-        group.setId("1");
-        group.setName("zhon");
-        groupList.add(group);
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        List<Group> groupList = groupService.selectByUserId(user);
         map.put("groupList", groupList);
         return new ModelAndView("/index", map);
     }
