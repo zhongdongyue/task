@@ -40,7 +40,7 @@ public interface ITaskService {
      * @param userId
      * @return
      */
-    List<Task> selectByUserId(String userId);
+    Pager<Task> selectByUserId(int pageNum,int pageSize,String userId);
 
     /**
      * 查询用户当前领取多少任务

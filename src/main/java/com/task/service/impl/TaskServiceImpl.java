@@ -73,9 +73,9 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public List<Task> selectByUserId(String userId) {
-        List<Task> tasks = taskMapper.selectByUserId(userId);
-        return tasks;
+    public Pager<Task> selectByUserId(int pageNum,int pageSize,String userId) {
+        PageInfo<Task> sqlPage = new PageInfo<>(taskMapper.selectByUserId(pageNum,pageSize,userId));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public void receive(String id,String userId) {
-        User user = userService.getById(id);
+        User user = userService.getById(userId);
         if(user.equals("general_user")){
             throw new BusinessException(ResponseCode.NOT_TASK_PERMISSION,"无领取任务权限，请先申请");
         }
@@ -113,14 +113,16 @@ public class TaskServiceImpl implements ITaskService {
             throw new BusinessException(ResponseCode.TASK_NOT_COMPLETE,"有未完成任务，无法领取");
         }
         List<Task> tasks = taskMapper.selectMinuteByUserId(userId);
-        if(null!=tasks||!tasks.isEmpty()){
+        if(null!=tasks&&!tasks.isEmpty()){
             throw new BusinessException(ResponseCode.TASK_APPLY_FREQUENTLY,"20分钟内只能领取一次");
         }
         List<Task> countTasks = taskMapper.selectByDays(userId);
-        if(null!=countTasks||!countTasks.isEmpty()){
-            throw new BusinessException(ResponseCode.TASK_COUNT_OUT,"每天最多申请10个任务");
+        if(null!=countTasks && !countTasks.isEmpty()){
+            throw new BusinessException(ResponseCode.TASK_COUNT_OUT,"每天最多领取10个任务");
         }
         task.setStatus(1);
+        task.setUserId(userId);
+        task.setReceiveTime(new Date());
         taskMapper.updateByPrimaryKey(task);
     }
 }

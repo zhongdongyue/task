@@ -34,7 +34,7 @@ public interface TaskMapper {
      * @param userId
      * @return
      */
-    List<Task> selectByUserId(String userId);
+    List<Task> selectByUserId(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize,@Param("userId") String userId);
 
     /**
      * 查询用户当天领取多少任务

@@ -4,15 +4,20 @@ import com.task.controller.BaseController;
 import com.task.domain.Pager;
 import com.task.domain.ResponseData;
 import com.task.domain.ResponseMessage;
+import com.task.domain.SessionAttribute;
 import com.task.entity.Task;
+import com.task.entity.User;
 import com.task.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -28,11 +33,19 @@ public class TaskController extends BaseController {
     @Autowired
     private ITaskService taskService;
 
-//    @ResponseBody
-//    @RequestMapping(method = RequestMethod.GET)
-//    public ResponseData<List<Task>> getAll(String userId){
-//        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.(userId));
-//    }
+    @ResponseBody
+    @RequestMapping(value = "user/list",method = RequestMethod.GET)
+    public ResponseData<Task> getTaskByUser(HttpSession session,int page, int limit){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        Pager pages = taskService.selectByUserId(page,limit,user.getId());
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
+    }
 
     @ResponseBody
     @RequestMapping(value = "list",method = RequestMethod.GET)
@@ -60,8 +73,8 @@ public class TaskController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "complete",method = RequestMethod.POST)
-    public void complete(String id){
+    @RequestMapping(value = "complete/{taskId}",method = RequestMethod.POST)
+    public void complete(@PathVariable("taskId") String id){
         taskService.complete(id);
     }
 
@@ -69,5 +82,13 @@ public class TaskController extends BaseController {
     @RequestMapping(method = RequestMethod.DELETE)
     public void delete(String id){
         taskService.deleteByPrimaryKey(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "receive/{taskId}",method = RequestMethod.POST)
+    public ResponseData receive(HttpSession session, @PathVariable("taskId") String taskId){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        taskService.receive(taskId,user.getId());
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 }

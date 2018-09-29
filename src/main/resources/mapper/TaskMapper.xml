@@ -41,7 +41,8 @@
       user_id = #{userId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=LONGVARCHAR}
+      content = #{content,jdbcType=LONGVARCHAR},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
@@ -85,10 +86,12 @@
 
   <!--查看用户下任务-->
   <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
-    content,receive_time
-    FROM task
-    WHERE user_id = #{userId,jdbcType=VARCHAR}
+     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    t.content,t.receive_time
+    from task t
+    LEFT JOIN user u ON t.creator_id = u.id
+    LEFT JOIN user us ON t.user_id = us.id
+    WHERE t.user_id = #{userId,jdbcType=VARCHAR}
   </select>
 
   <!--查看用户当天领取了多少任务-->

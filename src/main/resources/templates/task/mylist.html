@@ -18,9 +18,9 @@
 
 	<body>
 		<div class="weadmin-body">
-			<table id="LAY-task-list" lay-filter="LAY-task-list"></table>
-			<script type="text/html" id="table-task-list">
-				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>领取任务</a>
+			<table id="LAY-my-task" lay-filter="LAY-my-task"></table>
+			<script type="text/html" id="table-my-task">
+				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>完成任务</a>
 			</script>
 		</div>
 <script src="/layui/layui.js" charset="utf-8"></script>
@@ -32,8 +32,8 @@
         var layer = layui.layer;
         var jquery = layui.jquery;
 		table.render({
-			elem: "#LAY-task-list",
-			url: "/api/tasks/list",
+			elem: "#LAY-my-task",
+			url: "/api/tasks/user/list",
 			page: true, //开启分页
 			cols: [
 				[{
@@ -55,17 +55,17 @@
 					width: 150,
 					align: "center",
 					fixed: "right",
-					toolbar: "#table-task-list"
+					toolbar: "#table-my-task"
 				}]
 			],
 			text: "对不起，加载出现异常！"
 		});
-        table.on("tool(LAY-task-list)", function (e) {
+        table.on("tool(LAY-my-task)", function (e) {
             if ("edit" === e.event) {
-                layer.confirm("确认领取任务？", function (t) {
+                layer.confirm("确认完成任务？", function (t) {
                     jquery.ajax({
                         type: 'POST',
-                        url: "/api/tasks/receive/" + e.data.id,
+                        url: "/api/tasks/complete/" + e.data.id,
                         success: function (data, textStatus, jqXHR) {
                             if (data.code == "200") {
                                 e.del(), layer.close(t)
