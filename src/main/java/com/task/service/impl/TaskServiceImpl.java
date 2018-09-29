@@ -125,4 +125,10 @@ public class TaskServiceImpl implements ITaskService {
         task.setReceiveTime(new Date());
         taskMapper.updateByPrimaryKey(task);
     }
+
+    @Override
+    public Pager<Task> selectAll(int pageNum, int pageSize) {
+        PageInfo<Task> sqlPage = new PageInfo<>(taskMapper.selectAll(pageNum,pageSize));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
+    }
 }

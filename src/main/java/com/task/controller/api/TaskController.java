@@ -48,6 +48,19 @@ public class TaskController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "all",method = RequestMethod.GET)
+    public ResponseData<Task> getALL(int page, int limit){
+        Pager pages = taskService.selectAll(page,limit);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "list",method = RequestMethod.GET)
     public ResponseData<Task> getTaskList(int page, int limit){
         Pager pages = taskService.selectPending(page,limit);
@@ -62,26 +75,30 @@ public class TaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public void insert(Task task){
+    public ResponseData insert(Task task){
         taskService.insert(task);
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public void update(Task task){
+    public ResponseData update(Task task){
         taskService.updateByPrimaryKey(task);
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody
     @RequestMapping(value = "complete/{taskId}",method = RequestMethod.POST)
-    public void complete(@PathVariable("taskId") String id){
+    public ResponseData complete(@PathVariable("taskId") String id){
         taskService.complete(id);
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.DELETE)
-    public void delete(String id){
+    @RequestMapping(value ="{id}",method = RequestMethod.DELETE)
+    public ResponseData delete(@PathVariable("id") String id){
         taskService.deleteByPrimaryKey(id);
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody

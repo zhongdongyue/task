@@ -108,12 +108,15 @@
                             <cite>我的任务</cite>
                         </a>
                     </li>
-                    <li>
-                        <a _href="/user/role">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>任务管理</cite>
-                        </a>
-                    </li>
+                    <#if USER_ATTR.roleName == 'admin'|| USER_ATTR.roleName == 'general_admin'>
+                        <li>
+                            <a _href="/task/manager">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>任务管理</cite>
+                            </a>
+                        </li>
+                    </#if>
+
                 </ul>
             </li>
         </ul>

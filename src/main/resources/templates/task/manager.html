@@ -18,25 +18,17 @@
 
 	<body>
 		<div class="weadmin-body">
-			<table id="LAY-my-task" lay-filter="LAY-my-task"></table>
-			<script type="text/html" id="table-my-task">
-				{{#  if(d.status == 2){ }}
-				 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>点击完成任务</a>
-				{{#  } else { }}
-				<a class="layui-btn-xs" ><i class="layui-icon"></i>已完成</a>
-				{{#  } }}
+			<div class="weadmin-block">
+				<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+				<button class="layui-btn" onclick="WeAdminShow('添加用户','/user/add')"><i class="layui-icon"></i>发布任务</button>
+			</div>
+			<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
+			<script type="text/html" id="table-manager-list">
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 			</script>
 		</div>
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
-<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
-<script id="createTime" type="text/html">
-	{{#
-	var date = new Date();
-	date.setTime(d.createTime);
-	return date.Format("yyyy-MM-dd");
-	}}
-</script>
 <script>
 	layui.use(['table','jquery','layer'], function () {
 		var table = layui.table;
@@ -44,8 +36,8 @@
         var layer = layui.layer;
         var jquery = layui.jquery;
 		table.render({
-			elem: "#LAY-my-task",
-			url: "/api/tasks/user/list",
+			elem: "#LAY-manager-list",
+			url: "/api/tasks/all",
 			page: true, //开启分页
 			cols: [
 				[{
@@ -63,21 +55,25 @@
 				},{
                     field: "createTime", title: "创建时间"
                 },{
+                    field: "userName", title: "领取人"
+                },{
+                    field: "receiveTime", title: "领取时间"
+                },{
 					title: "操作",
 					width: 150,
 					align: "center",
 					fixed: "right",
-					toolbar: "#table-my-task"
+					toolbar: "#table-manager-list"
 				}]
 			],
 			text: "对不起，加载出现异常！"
 		});
-        table.on("tool(LAY-my-task)", function (e) {
-            if ("edit" === e.event) {
-                layer.confirm("确认完成任务？", function (t) {
+        table.on("tool(LAY-manager-list)", function (e) {
+            if ("del" === e.event) {
+                layer.confirm("确认删除任务？", function (t) {
                     jquery.ajax({
-                        type: 'POST',
-                        url: "/api/tasks/complete/" + e.data.id,
+                        type: 'DELETE',
+                        url: "/api/tasks/" + e.data.id,
                         success: function (data, textStatus, jqXHR) {
                             if (data.code == "200") {
                                 e.del(), layer.close(t)

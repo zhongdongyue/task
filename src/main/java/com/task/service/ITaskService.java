@@ -43,6 +43,13 @@ public interface ITaskService {
     Pager<Task> selectByUserId(int pageNum,int pageSize,String userId);
 
     /**
+     * 查询所有任务
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Pager<Task> selectAll(int pageNum,int pageSize);
+    /**
      * 查询用户当前领取多少任务
      * @param userId
      * @return
@@ -56,7 +63,7 @@ public interface ITaskService {
     void complete(String id);
 
     /**
-     * 申请任务
+     * 领取任务
      * @param id
      * @param userId
      */

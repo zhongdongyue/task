@@ -47,7 +47,7 @@
   </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.creator_id, t.user_id,t.create_time, t.update_time,
     t.content,t.receive_time
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
@@ -56,7 +56,7 @@
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
     t.content,t.receive_time
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
@@ -66,7 +66,7 @@
 
   <!--查看7天内任务-->
   <select id="selectPending" resultMap="BaseResultMap">
-     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
     t.content,t.receive_time
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
@@ -86,7 +86,7 @@
 
   <!--查看用户下任务-->
   <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
     t.content,t.receive_time
     from task t
     LEFT JOIN user u ON t.creator_id = u.id

@@ -12,7 +12,7 @@ public interface TaskMapper {
 
     Task selectByPrimaryKey(String id);
 
-    List<Task> selectAll();
+    List<Task> selectAll(@Param("pageNum") int pageNum, @Param("pageSize")int pageSize );
 
     int updateByPrimaryKey(Task record);
 
