@@ -55,4 +55,10 @@
     from `group`
     WHERE name = #{name,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectAllByPage" resultMap="BaseResultMap">
+    select id, `name`, description, create_time, update_time
+    from `group`
+  </select>
+
 </mapper>

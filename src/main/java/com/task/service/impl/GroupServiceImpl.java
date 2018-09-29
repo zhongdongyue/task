@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.task.dao.mapper.GroupMapper;
+import com.task.domain.Pager;
 import com.task.entity.Group;
 import com.task.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +61,11 @@ public class GroupServiceImpl implements IGroupService {
             groups.add(group);
             return groups;
         }
+    }
+
+    @Override
+    public Pager<Group> selectAllByPage(int pageNum, int pageSize) {
+        PageInfo<Group> sqlPage = new PageInfo<>(groupMapper.selectAllByPage(pageNum,pageSize));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
     }
 }

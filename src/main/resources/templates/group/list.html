@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <table id="LAY-group-list" lay-filter="LAY-group-list"></table>
+    <script type="text/html" id="table-group-list">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+    </script>
+</div>
+<script src="/layui/layui.js" charset="utf-8"></script>
+<script src="/js/eleDel.js" charset="utf-8"></script>
+<script>
+    layui.config({ base: '{/}/js/', version: '101100'});
+    layui.use(['table','jquery','layer'], function () {
+        var table = layui.table;
+        var $ = layui.$;
+        var layer = layui.layer;
+        var jquery = layui.jquery;
+        table.render({
+            elem: "#LAY-group-list",
+            url: "/api/userGroups",
+            page: true, //开启分页
+            cols: [
+                [{
+                    field: "id", width: 80, title: "ID", hide:true
+                }, {
+                    field: "name", title: "用户名"
+                }, {
+                    field: "description", title: "描述"
+                }, {
+                    field: "createTime", title: "创建时间"
+                },{
+                    title: "操作",
+                    width: 150,
+                    align: "center",
+                    fixed: "right",
+                    toolbar: "#table-group-list"
+                }]
+            ],
+            text: "对不起，加载出现异常！"
+        });
+        table.on("tool(LAY-group-list)", function (e) {
+            if ("del" === e.event) {
+                layer.confirm("确认删除？", function (t) {
+                    jquery.ajax({
+                        type: 'DELETE',
+                        url: "/api/users/" + e.data.id,
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.code == "200") {
+                                e.del(), layer.close(t)
+                            } else {
+                                layer.open({content: data.message, shade: [0.8, '#393D49']});
+                            }
+                        },
+                        dataType: "json"
+                    });
+                });
+            }
+            else if ("edit" === e.event) {
+                layer.open({
+                    type: 2,
+                    title: "编辑用户",
+                    content: "/user/adminEdit?userId=" + e.data.id,
+                    area: ["500px", "400px"],
+                    btn: ["确定", "取消"],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe'+ index];
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(update)', function(data){
+                            var field = data.field; //获取提交的字段
+                            jquery.ajax({
+                                type: 'PUT',
+                                url: "/api/users",
+                                data: JSON.stringify({
+                                    "id": field.userId,
+                                    "roleId": field.roleId,
+                                    "groupId": field.groupId
+                                }),
+                                contentType: 'application/json',
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.code == "200") {
+                                        table.reload('LAY-user-list'); //数据刷新
+                                        layer.close(index); //关闭弹层
+                                    } else {
+                                        layer.close(index); //关闭弹层
+                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                    }
+                                },
+                                dataType: "json"
+                            });
+                        });
+
+                        iframeWindow.layui.jquery("#admin_edit_submit").click()
+                    },
+                    success: function (e, t) {
+                    }
+                })
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
