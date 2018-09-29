@@ -27,6 +27,7 @@
 </div>
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/eleDel.js" charset="utf-8"></script>
+<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
 <script>
     layui.config({ base: '{/}/js/', version: '101100'});
     layui.use(['table','jquery','layer'], function () {
@@ -46,7 +47,7 @@
                 }, {
                     field: "description", title: "描述"
                 }, {
-                    field: "createTime", title: "创建时间"
+                    field: "createTime", title: "创建时间" ,templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
                     title: "操作",
                     width: 150,
@@ -62,7 +63,7 @@
                 layer.confirm("确认删除？", function (t) {
                     jquery.ajax({
                         type: 'DELETE',
-                        url: "/api/users/" + e.data.id,
+                        url: "/api/userGroups/" + e.data.id,
                         success: function (data, textStatus, jqXHR) {
                             if (data.code == "200") {
                                 e.del(), layer.close(t)

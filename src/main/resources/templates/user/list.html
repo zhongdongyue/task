@@ -27,6 +27,7 @@
 </div>
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/eleDel.js" charset="utf-8"></script>
+<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
 <script>
     layui.config({ base: '{/}/js/', version: '101100'});
     layui.use(['table','jquery','layer'], function () {
@@ -48,9 +49,9 @@
                 }, {
                     field: "groupName", title: "所属组"
                 }, {
-                    field: "roleName", title: "角色"
+                    field: "roleDescription", title: "角色"
                 },{
-                    field: "createTime", title: "创建时间"
+                    field: "createTime", title: "创建时间"  , templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
                     title: "操作",
                     width: 150,
