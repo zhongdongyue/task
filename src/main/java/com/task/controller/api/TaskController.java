@@ -75,7 +75,9 @@ public class TaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseData insert(Task task){
+    public ResponseData insert(HttpSession session,Task task){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        task.setCreatorId(user.getId());
         taskService.insert(task);
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }

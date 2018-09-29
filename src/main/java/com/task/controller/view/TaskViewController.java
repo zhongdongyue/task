@@ -24,4 +24,9 @@ public class TaskViewController extends BaseController {
     public ModelAndView manager() {
         return new ModelAndView("/task/manager");
     }
+
+    @RequestMapping(value = "add", method = RequestMethod.GET)
+    public ModelAndView add() {
+        return new ModelAndView("/task/add");
+    }
 }
