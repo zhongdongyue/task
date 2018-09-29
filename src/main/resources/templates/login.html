@@ -61,11 +61,10 @@
                 url: "/api/login",
                 data: data.field,
                 success: function (data, textStatus, jqXHR) {
-                    if (data.result == "ok") {
-                        localStorage.setItem("login", true)
-                        location.href='./index'
+                    if (data.code == "200") {
+                        location.href='./index';
                     } else {
-                        layer.open({content: JSON.stringify(data),shade: [0.8, '#393D49']});
+                        layer.open({content: data.message, shade: [0.8, '#393D49']});
                     }
                 },
                 dataType: "json"
