@@ -23,6 +23,7 @@
 			</div>
 			<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
 			<script type="text/html" id="table-manager-list">
+				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 			</script>
 		</div>
@@ -83,6 +84,45 @@
                         dataType: "json"
                     });
                 });
+            }else if ("edit" === e.event) {
+                layer.open({
+                    type: 2,
+                    title: "编辑用户",
+                    content: "/task/edit?taskId=" + e.data.id,
+                    area: ["500px", "400px"],
+                    btn: ["确定", "取消"],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe'+ index];
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(update)', function(data){
+                            var field = data.field; //获取提交的字段
+                            jquery.ajax({
+                                type: 'PUT',
+                                url: "/api/tasks",
+                                data: JSON.stringify({
+                                    "id": field.userId,
+                                    "roleId": field.roleId,
+                                    "groupId": field.groupId
+                                }),
+                                contentType: 'application/json',
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.code == "200") {
+                                        table.reload('LAY-user-list'); //数据刷新
+                                        layer.close(index); //关闭弹层
+                                    } else {
+                                        layer.close(index); //关闭弹层
+                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                    }
+                                },
+                                dataType: "json"
+                            });
+                        });
+
+                        iframeWindow.layui.jquery("#admin_edit_submit").click()
+                    },
+                    success: function (e, t) {
+                    }
+                })
             }
         });
         jquery("#add_task").on("click", function () {
