@@ -34,6 +34,7 @@ public class LoginController {
     @ResponseBody
     public Object login(HttpSession session, String username, String password) {
         User user = userService.getByAccount(username);
+        session.setAttribute("user",user);
 //        if (user == null) {
 //            throw new BusinessException(ResponseCode.USERNAME_OR_PASSWORD_ERROR,"登录用户不存在:" + username);
 //        }
