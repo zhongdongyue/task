@@ -96,10 +96,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        User userById = userMapper.selectByPrimaryKey(user.getId());
-        userById.setUpdateTime(new Date());
-        userMapper.updateByPrimaryKey(userById);
-        return userById;
+        user.setUpdateTime(new Date());
+        userMapper.updateByPrimaryKey(user);
+        return user;
     }
 
     @Override
