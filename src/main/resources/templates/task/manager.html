@@ -19,7 +19,7 @@
 	<body>
 		<div class="weadmin-body">
 			<div class="weadmin-block">
-				<button class="layui-btn" onclick="WeAdminShow('添加用户','/user/add')"><i class="layui-icon"></i>发布任务</button>
+				<button class="layui-btn" id="add_task"><i class="layui-icon"></i>发布任务</button>
 			</div>
 			<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
 			<script type="text/html" id="table-manager-list">
@@ -84,6 +84,42 @@
                     });
                 });
             }
+        });
+        jquery("#add_task").on("click", function () {
+            layer.open({
+                type: 2,
+                title: "发布任务",
+                content: "/task/add",
+                area: ["90%", "90%"],
+                btn: ["确定", "取消"],
+                yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe'+ index];
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(add_task)', function(data){
+                        var field = data.field; //获取提交的字段
+						debugger;
+                        jquery.ajax({
+                            type: 'POST',
+                            url: "/api/tasks",
+                            data: field,
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.code == "200") {
+                                    table.reload('LAY-manager-list'); //数据刷新
+                                    layer.close(index); //关闭弹层
+                                } else {
+                                    layer.close(index); //关闭弹层
+                                    layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    });
+
+                    iframeWindow.layui.jquery("#add_task").click()
+                },
+                success: function (e, t) {
+                }
+            })
         });
 	});
 </script>
