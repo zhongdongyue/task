@@ -2,31 +2,24 @@ package com.task.entity;
 
 import java.util.Date;
 
-/**
- * CLASS_NAME
- *
- * @author hull
- * @version 2018/9/12
- * @since since
- */
 public class Task {
     private String id;
+
     private String name;
-    private int state;
-    private String userId;
-    private Date createTime;
-    private Date updateTime;
-    private Date receiveTime;
+
     private String description;
-    private String receiveUserId;
 
-    public String getReceiveUserId() {
-        return receiveUserId;
-    }
+    private Integer status;
 
-    public void setReceiveUserId(String receiveUserId) {
-        this.receiveUserId = receiveUserId;
-    }
+    private String creatorId;
+
+    private String userId;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private String content;
 
     public String getId() {
         return id;
@@ -44,12 +37,28 @@ public class Task {
         this.name = name;
     }
 
-    public int getState() {
-        return state;
+    public String getDescription() {
+        return description;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getUserId() {
@@ -76,34 +85,30 @@ public class Task {
         this.updateTime = updateTime;
     }
 
-    public Date getReceiveTime() {
-        return receiveTime;
+    public String getContent() {
+        return content;
     }
 
-    public void setReceiveTime(Date recieveTime) {
-        this.receiveTime = recieveTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", state=" + state +
-                ", userId='" + userId + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", receiveTime=" + receiveTime +
-                ", description='" + description + '\'' +
-                ", receiveUserId='" + receiveUserId + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", description=").append(description);
+        sb.append(", status=").append(status);
+        sb.append(", creatorId=").append(creatorId);
+        sb.append(", userId=").append(userId);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", content=").append(content);
+        sb.append("]");
+        return sb.toString();
     }
 }

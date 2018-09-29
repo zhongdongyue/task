@@ -2,7 +2,7 @@ package com.task.entity;
 
 import java.util.Date;
 
-public class Role {
+public class Group {
     private String id;
 
     private String name;

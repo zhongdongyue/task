@@ -112,7 +112,7 @@ public class TaskServiceImpl implements ITaskService {
         if(null!=countTasks||!countTasks.isEmpty()){
             throw new BusinessException(ResponseCode.TASK_COUNT_OUT,"每天最多申请10个任务");
         }
-        task.setState(1);
+        task.setStatus(1);
         taskMapper.updateByPrimaryKey(task);
     }
 
@@ -122,17 +122,17 @@ public class TaskServiceImpl implements ITaskService {
         if(null == task){
             throw new BusinessException(ResponseCode.TASK_NOT_EXIST,"任务不存在");
         }
-        if(task.getState() == 2){
+        if(task.setStatus() == 2){
             throw new BusinessException(ResponseCode.TASK_REFUSE,"任务申请已被拒绝，无法操作");
         }
         if(state==2){
-            task.setState(0);
+            task.setStatus(0);
             task.setReceiveUserId(null);
             task.setReceiveTime(null);
             taskMapper.updateByPrimaryKey(task);
         }
         if(state == 1){
-            task.setState(8);
+            task.setStatus(8);
             taskMapper.updateByPrimaryKey(task);
         }
     }

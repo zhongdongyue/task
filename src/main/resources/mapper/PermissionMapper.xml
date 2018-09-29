@@ -4,36 +4,43 @@
   <resultMap id="BaseResultMap" type="com.task.entity.Permission">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from permission
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.task.entity.Permission">
-    insert into permission (id, `name`, code)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR})
+    insert into permission (id, `name`, description, 
+      code, `method`, url, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.task.entity.Permission">
     update permission
-    set `name` = #{name,jdbcType=VARCHAR},code = #{code,jdbcType=VARCHAR}
+    set `name` = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      `method` = #{method,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, `name`,code
+    select id, `name`, description, code, `method`, url, create_time, update_time
     from permission
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, `name`,code
+    select id, `name`, description, code, `method`, url, create_time, update_time
     from permission
-  </select>
-
-  <select id="selectByNameAndCode" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT p.id , p.`code`,p.`name`
-    FROM permission p
-    LEFT JOIN role_permission rp ON p.id=rp.permission_id
-    LEFT JOIN role r ON rp.role_id = r.id
-    WHERE r.name = #{arg0} and p.`code`= #{arg1}
   </select>
 </mapper>

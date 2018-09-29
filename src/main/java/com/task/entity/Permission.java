@@ -1,12 +1,23 @@
 package com.task.entity;
 
-public class Permission {
+import java.util.Date;
 
+public class Permission {
     private String id;
 
     private String name;
 
+    private String description;
+
     private String code;
+
+    private String method;
+
+    private String url;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -24,6 +35,14 @@ public class Permission {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getCode() {
         return code;
     }
@@ -32,32 +51,53 @@ public class Permission {
         this.code = code;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Permission)) return false;
-
-        Permission that = (Permission) o;
-
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
+    public String getMethod() {
+        return method;
     }
 
-    @Override
-    public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
-        return result;
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
     public String toString() {
-        return "Permission{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", description=").append(description);
+        sb.append(", code=").append(code);
+        sb.append(", method=").append(method);
+        sb.append(", url=").append(url);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append("]");
+        return sb.toString();
     }
 }

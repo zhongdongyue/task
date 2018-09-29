@@ -4,70 +4,49 @@
   <resultMap id="BaseResultMap" type="com.task.entity.User">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="sys_role" jdbcType="VARCHAR" property="sysRole" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-
-  <sql id="Columns">
-    user.id, username, `name`, phone, `password`, sys_role, create_time,
-    update_time
-  </sql>
-
-  <delete id="deleteById" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.task.entity.User">
-    insert into user (id, username,password, `name`,phone,sys_role, create_time,
-      update_time)
-    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
-    , #{phone,jdbcType=VARCHAR}, #{sysRole,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into user (id, username, `password`, 
+      phone, group_id, role_id, 
+      `status`, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <update id="updateById" parameterType="com.task.entity.User">
+  <update id="updateByPrimaryKey" parameterType="com.task.entity.User">
     update user
     set username = #{username,jdbcType=VARCHAR},
-      `name` = #{name,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      sys_role = #{sysRole,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-
-  <update id="updatePassword">
-      UPDATE user set password #{password} WHERE id=#{userId}
-  </update>
-
-  <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, username, `name`,phone, `password`,sys_role, create_time,
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, username, `password`, phone, group_id, role_id, `status`, create_time, 
     update_time
     from user
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, `name`, phone, `password`, sys_role, create_time,
+    select id, username, `password`, phone, group_id, role_id, `status`, create_time, 
     update_time
     from user
   </select>
-
-    <select id="selectByUserGroup" parameterType="string" resultMap="BaseResultMap">
-      SELECT <include refid="Columns"/> FROM user
-      INNER JOIN user_group_relation ra ON user.id=ra.user_id
-      WHERE ra.user_group_id=#{userGroupId}
-    </select>
-
-  <select id="selectByAccount" resultMap="BaseResultMap">
-    SELECT <include refid="Columns"/> FROM user where username=#{username}
-  </select>
-
-  <select id="selectByAccountAndPassword" resultMap="BaseResultMap">
-    SELECT <include refid="Columns"/> FROM user where username=#{username} AND password=#{password}
-  </select>
-
 </mapper>

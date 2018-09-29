@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="jdbc.properties"></properties>
+    <!--加载 JDBC 驱动, 配有jdbcConnection时可以不写, 此处为绝对路径 -->
+    <!--<classPathEntry location="c:\mybatis\mybatis-generator\src\main\resources\mysql-connector-java-5.1.42.jar"/>-->
+
+    <context id="database-gen" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+
+        <!-- 注释信息配置-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库链接，要求驱动必须在classpath下，否则必须通过classPathEntry元素导入jar-->
+        <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}"
+        userId="${jdbc.user}" password="${jdbc.password}"/>
+
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.13.25:3306/mysql"-->
+                        <!--userId="root" password="root1234"/>-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.task.entity" targetProject="MAVEN">
+            <!-- 设置所有实体类的基类-->
+            <!--<property name="rootClass" value="com.trendytech.entity.BaseEntity"/>-->
+        </javaModelGenerator>
+        
+        <sqlMapGenerator targetPackage="mapper" targetProject="MAVEN"/>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.task.dao.mapper" targetProject="MAVEN"
+            >
+        </javaClientGenerator>
+        <table tableName="%" enableDeleteByExample="false" enableCountByExample="false"
+            enableUpdateByExample="false"
+        >
+        </table>
+    </context>
+</generatorConfiguration>

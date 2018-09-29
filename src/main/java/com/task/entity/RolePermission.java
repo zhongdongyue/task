@@ -1,5 +1,7 @@
 package com.task.entity;
 
+import java.util.Date;
+
 public class RolePermission {
     private String id;
 
@@ -7,6 +9,9 @@ public class RolePermission {
 
     private String permissionId;
 
+    private Date createTime;
+
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -32,6 +37,21 @@ public class RolePermission {
         this.permissionId = permissionId;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     @Override
     public String toString() {
@@ -42,6 +62,8 @@ public class RolePermission {
         sb.append(", id=").append(id);
         sb.append(", roleId=").append(roleId);
         sb.append(", permissionId=").append(permissionId);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
         sb.append("]");
         return sb.toString();
     }

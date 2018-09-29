@@ -4,60 +4,35 @@
   <resultMap id="BaseResultMap" type="com.task.entity.Role">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="alias" jdbcType="VARCHAR" property="alias"/>
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from role
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.task.entity.Role">
-    <selectKey keyProperty="id" resultType="String" order="BEFORE">
-        SELECT REPLACE(UUID(),'-','')
-    </selectKey>
-    insert into role (id, `name`,alias)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}),#{alias,jdbcType=VARCHAR}
+  <insert id="insert" parameterType="com.task.entity.Role">
+    insert into role (id, `name`, description, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.task.entity.Role">
     update role
     set `name` = #{name,jdbcType=VARCHAR},
-    set `alias` = #{alias,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, `name`,alias
+    select id, `name`, description, create_time, update_time
     from role
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, `name` ,alias
+    select id, `name`, description, create_time, update_time
     from role
   </select>
-
-  <select id="selectUserRoleByCatalogIdAndUserId" resultMap="BaseResultMap">
-    SELECT r.id, r.`name` ,r.alias
-    FROM tenant_catalog_relation tcr
-    LEFT JOIN tenant_user_view tuv ON tuv.tenant_id=tcr.tenant_id
-    LEFT JOIN role r ON r.id=tuv.role_id
-    WHERE tcr.catalog_id=#{catalogId,jdbcType=VARCHAR} AND tuv.account=#{account,jdbcType=VARCHAR}
-  </select>
-
-  <select id="selectByMachineIdAndUserIdAndName" resultMap="BaseResultMap">
-    SELECT r.id,r.name,r.alias
-    FROM machine_account ma
-    INNER JOIN tenant_user_relation tur ON tur.user_id=ma.user_id
-    INNER JOIN role r ON r.id=tur.role_id
-    WHERE ma.machine_id=#{machineId,jdbcType=VARCHAR} AND ma.user_id=#{userId,jdbcType=VARCHAR} AND r.`name`=#{roleName,jdbcType=VARCHAR}
-  </select>
-
-    <select id="selectByTenantIdAndUserId" resultMap="BaseResultMap">
-        SELECT role.id, role.name, role.alias FROM role
-        INNER JOIN tenant_user_relation ra ON ra.role_id = role.id
-        WHERE ra.user_id =#{userId} AND ra.tenant_id = #{tenantId}
-    </select>
-
-    <select id="selectByName" resultMap="BaseResultMap">
-        SELECT role.id, role.name, role.alias FROM role
-        WHERE name = #{roleName}
-    </select>
 </mapper>
