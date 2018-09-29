@@ -2,6 +2,7 @@ package com.task.service;
 
 import java.util.List;
 
+import com.task.domain.Pager;
 import com.task.entity.Task;
 
 /**
@@ -25,7 +26,7 @@ public interface ITaskService {
      * 查询7天内可以领取的任务
      * @return
      */
-    List<Task> selectPending(int pageNum,int size);
+    Pager<Task> selectPending(int pageNum, int size);
 
     /**
      * 查询用户20分钟之内领取的任务

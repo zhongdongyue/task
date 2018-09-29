@@ -22,61 +22,44 @@
 				<button class="layui-btn" onclick="WeAdminShow('发布任务','/user/add')"><i class="layui-icon"></i>发布任务</button>
 				<span class="fr" style="line-height:40px">共有数据：88 条</span>
 			</div>
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>
-							<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
-						</th>
-						<th>ID</th>
-						<th>登录名</th>
-						<th>手机</th>
-						<th>邮箱</th>
-						<th>角色</th>
-						<th>加入时间</th>
-						<th>状态</th>
-						<th>操作</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-						</td>
-						<td>1</td>
-						<td>admin</td>
-						<td>18925139194</td>
-						<td>113664000@qq.com</td>
-						<td>超级管理员</td>
-						<td>2017-01-01 11:11:42</td>
-						<td class="td-status">
-							<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span></td>
-						<td class="td-manage">
-							<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
-								<i class="layui-icon">&#xe601;</i>
-							</a>
-							<a title="编辑" onclick="WeAdminShow('编辑','/user/edit')" href="javascript:;">
-								<i class="layui-icon">&#xe642;</i>
-							</a>
-							<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-								<i class="layui-icon">&#xe640;</i>
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="page">
-				<div>
-					<a class="prev" href="">&lt;&lt;</a>
-					<a class="num" href="">1</a>
-					<span class="current">2</span>
-					<a class="num" href="">3</a>
-					<a class="num" href="">489</a>
-					<a class="next" href="">&gt;&gt;</a>
-				</div>
-			</div>
+			<table id="LAY-task-list" lay-filter="LAY-task-list"></table>
 		</div>
-		<script src="/layui/layui.js" charset="utf-8"></script>
-		<script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+<script src="/layui/layui.js" charset="utf-8"></script>
+<script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	layui.use(['table'], function () {
+		var table = layui.table;
+		table.render({
+			elem: "#LAY-task-list",
+			url: "/api/tasks/list",
+			page: true, //开启分页
+			cols: [
+				[{
+					type: "checkbox", fixed: "left"
+				}, {
+					field: "id", width: 80, title: "ID", sort: !0
+				}, {
+					field: "name", title: "任务名称"
+				}, {
+					field: "creatorName", title: "创建人"
+				},  {
+					field: "content", title: "任务内容"
+				},{
+					field: "description", title: "任务描述"
+				},{
+                    field: "createTime", title: "创建时间"
+                },{
+					title: "操作",
+					width: 150,
+					align: "center",
+					fixed: "right",
+					toolbar: "#table-useradmin-admin"
+				}]
+			],
+			text: "对不起，加载出现异常！"
+		})
+	});
+</script>
 	</body>
 
 </html>

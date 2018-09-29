@@ -3,6 +3,8 @@ package com.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
+import com.task.domain.Pager;
 import com.task.entity.User;
 import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +61,9 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public List<Task> selectPending(int pageNum,int pageSize) {
-        List<Task> tasks = taskMapper.selectPending(pageNum,pageSize);
-        return tasks;
+    public Pager<Task> selectPending(int pageNum, int pageSize) {
+        PageInfo<Task> sqlPage = new PageInfo<>(taskMapper.selectPending(pageNum,pageSize));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
     }
 
     @Override

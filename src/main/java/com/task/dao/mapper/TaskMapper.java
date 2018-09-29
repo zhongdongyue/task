@@ -20,7 +20,7 @@ public interface TaskMapper {
      * 查询7天内可以领取的任务
      * @return
      */
-    List<Task> selectPending(@Param("pageNum") int pageNum, @Param("size") int pageSize);
+    List<Task> selectPending(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
 
     /**
      * 查询用户20分钟之内领取的任务

@@ -46,25 +46,32 @@
   </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content,receive_time
-    from task
-    where id = #{id,jdbcType=VARCHAR}
+    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    t.content,t.receive_time
+    from task t
+    LEFT JOIN user u ON t.creator_id = u.id
+    LEFT JOIN user us ON t.user_id = us.id
+    where t.id = #{id,jdbcType=VARCHAR}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content,receive_time
-    from task
+    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    t.content,t.receive_time
+    from task t
+    LEFT JOIN user u ON t.creator_id = u.id
+    LEFT JOIN user us ON t.user_id = us.id
   </select>
 
 
   <!--查看7天内任务-->
   <select id="selectPending" resultMap="BaseResultMap">
-    select id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
-    content,receive_time
-    from task  where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(create_time) AND
-    state = 0
+     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.create_time, t.update_time,
+    t.content,t.receive_time
+    from task t
+    LEFT JOIN user u ON t.creator_id = u.id
+    LEFT JOIN user us ON t.user_id = us.id
+    where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(t.create_time) AND
+    t.status = 0
   </select>
 
 
