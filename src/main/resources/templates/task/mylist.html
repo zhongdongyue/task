@@ -30,13 +30,6 @@
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
-<script id="createTime" type="text/html">
-	{{#
-	var date = new Date();
-	date.setTime(d.createTime);
-	return date.Format("yyyy-MM-dd");
-	}}
-</script>
 <script>
 	layui.use(['table','jquery','layer'], function () {
 		var table = layui.table;
@@ -61,7 +54,7 @@
 				},{
 					field: "description", title: "任务描述"
 				},{
-                    field: "createTime", title: "创建时间"
+                    field: "createTime", title: "创建时间" , templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
 					title: "操作",
 					width: 150,

@@ -19,7 +19,6 @@
 	<body>
 		<div class="weadmin-body">
 			<div class="weadmin-block">
-				<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
 				<button class="layui-btn" onclick="WeAdminShow('添加用户','/user/add')"><i class="layui-icon"></i>发布任务</button>
 			</div>
 			<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
@@ -29,6 +28,8 @@
 		</div>
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+
 <script>
 	layui.use(['table','jquery','layer'], function () {
 		var table = layui.table;
@@ -40,9 +41,7 @@
 			url: "/api/tasks/all",
 			page: true, //开启分页
 			cols: [
-				[{
-					type: "checkbox", fixed: "left"
-				}, {
+				[ {
 					field: "id", width: 80, title: "ID", sort: !0 ,hide:true
 				}, {
 					field: "name", title: "任务名称"
@@ -53,11 +52,11 @@
 				},{
 					field: "description", title: "任务描述"
 				},{
-                    field: "createTime", title: "创建时间"
+                    field: "createTime", title: "创建时间",templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
                     field: "userName", title: "领取人"
                 },{
-                    field: "receiveTime", title: "领取时间"
+                    field: "receiveTime", title: "领取时间",templet: '<div>{{ Format(d.receiveTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
 					title: "操作",
 					width: 150,
