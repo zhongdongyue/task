@@ -19,10 +19,6 @@
 
 <body>
 <div class="weadmin-body">
-    <div class="weadmin-block">
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加用户','/user/add')"><i class="layui-icon"></i>添加</button>
-    </div>
     <table id="LAY-user-list" lay-filter="LAY-user-list"></table>
     <script type="text/html" id="table-user-list">
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
@@ -30,6 +26,7 @@
     </script>
 </div>
 <script src="/layui/layui.js" charset="utf-8"></script>
+<script src="/js/eleDel.js" charset="utf-8"></script>
 <script>
     layui.config({ base: '{/}/js/', version: '101100'});
     layui.use(['table','jquery','layer'], function () {
@@ -43,8 +40,6 @@
             page: true, //开启分页
             cols: [
                 [{
-                    type: "checkbox", fixed: "left"
-                }, {
                     field: "id", width: 80, title: "ID", hide:true
                 }, {
                     field: "username", title: "用户名"
@@ -87,17 +82,37 @@
                 layer.open({
                     type: 2,
                     title: "编辑用户",
-                    content: "/user/edit",
-                    maxmin: !0,
-                    area: ["500px", "450px"],
+                    content: "/user/adminEdit?userId=" + e.data.id,
+                    area: ["500px", "400px"],
                     btn: ["确定", "取消"],
-                    yes: function (e, t) {
-                        var l = window["layui-layer-iframe" + e], r = "LAY-user-front-submit",
-                            n = t.find("iframe").contents().find("#" + r);
-                        l.layui.form.on("submit(" + r + ")", function (t) {
-                            t.field;
-                            i.reload("LAY-user-front-submit"), layer.close(e)
-                        }), n.trigger("click")
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe'+ index];
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(update)', function(data){
+                            var field = data.field; //获取提交的字段
+                            jquery.ajax({
+                                type: 'PUT',
+                                url: "/api/users",
+                                data: JSON.stringify({
+                                    "id": field.userId,
+                                    "roleId": field.roleId,
+                                    "groupId": field.groupId
+                                }),
+                                contentType: 'application/json',
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.code == "200") {
+                                        table.reload('LAY-user-list'); //数据刷新
+                                        layer.close(index); //关闭弹层
+                                    } else {
+                                        layer.close(index); //关闭弹层
+                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                    }
+                                },
+                                dataType: "json"
+                            });
+                        });
+
+                        iframeWindow.layui.jquery("#admin_edit_submit").click()
                     },
                     success: function (e, t) {
                     }

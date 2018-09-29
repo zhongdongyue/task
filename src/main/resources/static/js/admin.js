@@ -16,7 +16,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		element = layui.element;
 	var menu = [];
 	var curMenu;
-
 	/*
 	 * @todo 初始化加载完成执行方法
 	 * 打开或刷新后执行
@@ -83,23 +82,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 				$('.layui-tab-content iframe').eq(0).parent().addClass('layui-show');
 			}
 		}, 100);
-		//点击tab标题时，触发reloadTab函数
-		$('#tabName').on('click','li',function(){
-			reloadTab(this);
-		});
-
 		//初始化加载结束
-	});
-
-	//点击遮罩背景，左侧菜单隐藏
-	$('.page-content-bg').click(function(event) {
-		$('.left-nav').animate({
-			left: '-221px'
-		}, 100);
-		$('.page-content').animate({
-			left: '0px'
-		}, 100);
-		$(this).hide();
 	});
 
 	/*
