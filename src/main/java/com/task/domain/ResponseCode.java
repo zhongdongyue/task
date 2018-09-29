@@ -46,6 +46,9 @@ public class ResponseCode {
     /** 任务申请频繁*/
     public static final int TASK_NOT_COMPLETE = 3005;
 
+    /** 任务申请频繁*/
+    public static final int NOT_TASK_PERMISSION = 3006;
+
     /**用户名或密码不正确*/
     public static final  int USERNAME_OR_PASSWORD_ERROR = 3100;
     /**用户已被添加到用户组*/

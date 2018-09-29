@@ -9,20 +9,20 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from group
+    delete from `group`
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.task.entity.Group" useGeneratedKeys="true" keyProperty="id">
     <selectKey keyProperty="id" resultType="string" order="BEFORE">
       select replace(UUID(), '-', '')
     </selectKey>
-    insert into group (id, `name`, description, 
+    insert into `group` (id, `name`, description,
       create_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.task.entity.Group">
-    update group
+    update `group`
     set `name` = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -31,18 +31,18 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, `name`, description, create_time, update_time
-    from group
+    from `group`
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, `name`, description, create_time, update_time
-    from group
+    from `group`
   </select>
 
 
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, `name`, description, create_time, update_time
-    from group
+    from `group`
     WHERE name = #{name,jdbcType=VARCHAR}
   </select>
 </mapper>

@@ -3,6 +3,8 @@ package com.task.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.task.entity.User;
+import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,9 @@ public class TaskServiceImpl implements ITaskService {
 
     @Autowired
     private TaskMapper taskMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void deleteByPrimaryKey(String id) {
@@ -90,6 +95,10 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public void receive(String id,String userId) {
+        User user = userService.getById(id);
+        if(user.equals("general_user")){
+            throw new BusinessException(ResponseCode.NOT_TASK_PERMISSION,"无领取任务权限，请先申请");
+        }
         Task task = taskMapper.selectByPrimaryKey(id);
         if(null == task){
             throw new BusinessException(ResponseCode.TASK_NOT_EXIST,"任务不存在");
