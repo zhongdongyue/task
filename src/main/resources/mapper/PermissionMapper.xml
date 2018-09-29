@@ -15,7 +15,10 @@
     delete from permission
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.task.entity.Permission">
+  <insert id="insert" parameterType="com.task.entity.Permission" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(UUID(), '-', '')
+    </selectKey>
     insert into permission (id, `name`, description, 
       code, `method`, url, 
       create_time, update_time)

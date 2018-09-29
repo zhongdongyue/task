@@ -21,6 +21,12 @@ public class Task {
 
     private String content;
 
+    private String creatorName;
+
+    private String userName;
+
+    private Date receiveTime;
+
     public String getId() {
         return id;
     }
@@ -93,22 +99,45 @@ public class Task {
         this.content = content;
     }
 
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Date getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(Date receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", description=").append(description);
-        sb.append(", status=").append(status);
-        sb.append(", creatorId=").append(creatorId);
-        sb.append(", userId=").append(userId);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", content=").append(content);
-        sb.append("]");
-        return sb.toString();
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", creatorId='" + creatorId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", content='" + content + '\'' +
+                ", creatorName='" + creatorName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", receiveTime=" + receiveTime +
+                '}';
     }
 }

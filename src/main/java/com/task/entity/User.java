@@ -21,6 +21,10 @@ public class User {
 
     private Date updateTime;
 
+    private String groupName;
+
+    private String roleName;
+
     public String getId() {
         return id;
     }
@@ -93,22 +97,36 @@ public class User {
         this.updateTime = updateTime;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", username=").append(username);
-        sb.append(", password=").append(password);
-        sb.append(", phone=").append(phone);
-        sb.append(", groupId=").append(groupId);
-        sb.append(", roleId=").append(roleId);
-        sb.append(", status=").append(status);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append("]");
-        return sb.toString();
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", groupId='" + groupId + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", groupName='" + groupName + '\'' +
+                ", roleName='" + roleName + '\'' +
+                '}';
     }
 }

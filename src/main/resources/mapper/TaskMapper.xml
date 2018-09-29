@@ -11,19 +11,25 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
+    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from task
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.task.entity.Task">
+  <insert id="insert" parameterType="com.task.entity.Task" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(UUID(), '-', '')
+    </selectKey>
     insert into task (id, `name`, description, 
       `status`, creator_id, user_id, 
-      create_time, update_time, content
+      create_time, update_time, content,receive_time
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR} ,#{receiveTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.task.entity.Task">
@@ -40,13 +46,13 @@
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content
+    content,receiveTime
     from task
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, `name`, description, `status`, creator_id, user_id, create_time, update_time, 
-    content
+    content,receiveTime
     from task
   </select>
 </mapper>

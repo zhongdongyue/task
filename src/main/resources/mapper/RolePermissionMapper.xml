@@ -12,7 +12,10 @@
     delete from role_permission
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.task.entity.RolePermission">
+  <insert id="insert" parameterType="com.task.entity.RolePermission" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(UUID(), '-', '')
+    </selectKey>
     insert into role_permission (id, role_id, permission_id, 
       create_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{permissionId,jdbcType=VARCHAR}, 

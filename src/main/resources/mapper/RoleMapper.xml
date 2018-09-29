@@ -12,7 +12,10 @@
     delete from role
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.task.entity.Role">
+  <insert id="insert" parameterType="com.task.entity.Role" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(UUID(), '-', '')
+    </selectKey>
     insert into role (id, `name`, description, 
       create_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
@@ -34,5 +37,11 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select id, `name`, description, create_time, update_time
     from role
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, `name`, description, create_time, update_time
+    from role
+    WHERE name = #{name,jdbcType=VARCHAR}
   </select>
 </mapper>
