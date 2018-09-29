@@ -56,10 +56,12 @@
   </select>
 
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, username, `password`, phone, group_id, role_id, `status`, create_time,
-    update_time
-    from user
-    WHERE username = #{userName,jdbcType=VARCHAR}
+    select u.id, u.username, u.`password`, u.phone, g.name AS group_name, r.name AS role_name, u.`status`, u.create_time,
+    u.update_time
+    from user u
+    LEFT JOIN `group`  g ON u.group_id = g.id
+    LEFT JOIN role r ON u.role_id = r.id
+    WHERE u.username = #{userName,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -68,7 +70,7 @@
     from user u
     LEFT JOIN `group`  g ON u.group_id = g.id
     LEFT JOIN role r ON u.role_id = r.id
-    WHERE  group_id = #{groupId,jdbcType=VARCHAR}
+    WHERE  u.group_id = #{groupId,jdbcType=VARCHAR}
   </select>
   
   <select id="selectByNameAndPassword" parameterType="java.lang.String" resultMap="BaseResultMap">
