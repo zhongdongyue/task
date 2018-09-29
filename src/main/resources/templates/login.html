@@ -50,7 +50,7 @@
     layui.extend({
         admin: '/js/admin'
     });
-    layui.use(['form','admin', 'jquery'], function(){
+    layui.use(['form','admin', 'jquery', 'layer'], function(){
         var form = layui.form,
             admin = layui.admim,
             jquery = layui.jquery;
@@ -65,15 +65,11 @@
                         localStorage.setItem("login", true)
                         location.href='./index'
                     } else {
-                        alert(JSON.stringify(data));
+                        layer.open({content: JSON.stringify(data),shade: [0.8, '#393D49']});
                     }
                 },
                 dataType: "json"
             });
-//            // alert(888)
-//            layer.msg(JSON.stringify(data.field),function(){
-//
-//            });
             return false;
         });
     });
