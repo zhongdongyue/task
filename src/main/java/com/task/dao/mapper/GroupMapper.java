@@ -14,4 +14,11 @@ public interface GroupMapper {
     List<Group> selectAll();
 
     int updateByPrimaryKey(Group record);
+
+    /**
+     * 根据名称查询分组
+     * @param name
+     * @return
+     */
+    Group selectByName(String name);
 }

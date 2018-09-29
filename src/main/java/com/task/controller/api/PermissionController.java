@@ -30,10 +30,10 @@ public class PermissionController extends BaseController {
     @Autowired
     private IPermissionService permissionService;
 
-    @RequestMapping(value = "/permissions/{code}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Permission> getPermission(HttpServletRequest request, @PathVariable("code") String code) {
-        User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
-        return permissionService.getByUserAndModuleCode(user, code);
-    }
+//    @RequestMapping(value = "/permissions/{code}", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Permission> getPermission(HttpServletRequest request, @PathVariable("code") String code) {
+//        User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
+//        return permissionService.getByUserAndModuleCode(user, code);
+//    }
 }

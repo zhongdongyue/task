@@ -27,51 +27,51 @@ public class TaskController extends BaseController {
     @Autowired
     private ITaskService taskService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseData<List<Task>> getAll(String userId){
-        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.selectByReceiveTime(userId));
-    }
+//    @ResponseBody
+//    @RequestMapping(method = RequestMethod.GET)
+//    public ResponseData<List<Task>> getAll(String userId){
+//        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.selectByReceiveTime(userId));
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "pend",method = RequestMethod.GET)
+//    public ResponseData<List<Task>> getPending(){
+//        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.selectPending());
+//    }
 
-    @ResponseBody
-    @RequestMapping(value = "pend",method = RequestMethod.GET)
-    public ResponseData<List<Task>> getPending(){
-        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,taskService.selectPending());
-    }
-
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.POST)
-    public void insert(Task task){
-        taskService.insert(task);
-    }
-
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT)
-    public void update(Task task){
-        taskService.updateByPrimaryKey(task);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "complete",method = RequestMethod.POST)
-    public void complete(String id){
-        taskService.complete(id);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "apply",method = RequestMethod.POST)
-    public void apply(String id){
-        taskService.apply(id);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "approve",method = RequestMethod.POST)
-    public void approve(String id ,int state){
-        taskService.approve(id,state);
-    }
-
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.DELETE)
-    public void delete(String id){
-        taskService.deleteByPrimaryKey(id);
-    }
+//    @ResponseBody
+//    @RequestMapping(method = RequestMethod.POST)
+//    public void insert(Task task){
+//        taskService.insert(task);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(method = RequestMethod.PUT)
+//    public void update(Task task){
+//        taskService.updateByPrimaryKey(task);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "complete",method = RequestMethod.POST)
+//    public void complete(String id){
+//        taskService.complete(id);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "apply",method = RequestMethod.POST)
+//    public void apply(String id){
+//        taskService.apply(id);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "approve",method = RequestMethod.POST)
+//    public void approve(String id ,int state){
+//        taskService.approve(id,state);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(method = RequestMethod.DELETE)
+//    public void delete(String id){
+//        taskService.deleteByPrimaryKey(id);
+//    }
 }

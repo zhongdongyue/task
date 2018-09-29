@@ -2,6 +2,7 @@ package com.task.service;
 
 import java.util.List;
 
+import com.task.domain.Pager;
 import com.task.entity.User;
 
 
@@ -56,10 +57,10 @@ public interface UserService {
     /**
      * 根据帐号获取用户信息
      *
-     * @param account 用户帐号
+     * @param username 用户帐号
      * @return 用户信息
      */
-    User getByAccount(String account);
+    User getByName(String username);
 
     /**
      * 根据用户帐号和密码获取用户
@@ -71,25 +72,20 @@ public interface UserService {
     User getByAccountAndPwd(String account, String password);
 
     /**
-     * 获取所有用户
-     *
-     * @return
-     */
-    List<User> getAll();
-
-    /**
      * 修改用户密码
      *
-     * @param userId
+     * @param userName
      * @param oldPwd
      * @param password
      */
-    void updatePassword(String userId, String oldPwd, String password);
+    void updatePassword(String userName, String oldPwd, String password);
 
     /**
-     * 校验帐号是否可用
-     * @param account   帐号
-     * @return  true：帐号可被使用
+     * 分页查询
+     * @param pageNum
+     * @param pageSize
+     * @param groupId
+     * @return
      */
-    boolean validateAccount(String account);
+    Pager<User> getPageByGroupId(int pageNum, int pageSize, String groupId);
 }

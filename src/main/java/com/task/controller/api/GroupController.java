@@ -1,14 +1,14 @@
 package com.task.controller.api;
 
-import java.util.List;
-
 import com.task.controller.BaseController;
+import com.task.entity.Group;
 import com.task.entity.User;
-import com.task.entity.UserGroup;
-import com.task.service.IUserGroupService;
+import com.task.service.IGroupService;
+import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import com.task.domain.Pager;
 
 /**
  * 用户组 视图控制器
@@ -19,17 +19,20 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("userGroups")
-public class UserGroupController extends BaseController {
+public class GroupController extends BaseController {
 
     @Autowired
-    private IUserGroupService userGroupService;
+    private IGroupService userGroupService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 创建用户组
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public UserGroup userGroup(@RequestBody UserGroup userGroup) {
+    public Group userGroup(@RequestBody Group userGroup) {
         return userGroupService.create(userGroup);
     }
 
@@ -47,27 +50,10 @@ public class UserGroupController extends BaseController {
      */
     @RequestMapping(value = "{groupId}/users", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getUserGroupMembers(@PathVariable("groupId") String groupId) {
-        return userGroupService.getMembers(groupId);
+    public Pager<User> getUserGroupMembers(@PathVariable("groupId") String groupId, int pageNum, int pageSize) {
+         return userService.getPageByGroupId(pageNum,pageSize,groupId);
     }
 
-    /**
-     * 添加用户组成员
-     */
-    @RequestMapping(value = "{groupId}/users", method = RequestMethod.POST)
-    @ResponseBody
-    public void addMember(@PathVariable("groupId") String groupId,List<String> userIds) {
-        userGroupService.addMember(groupId, userIds);
-    }
-
-    /**
-     * 移除用户组成员
-     */
-    @RequestMapping(value = "{groupId}/users/{userId}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public void removeMember(@PathVariable("groupId") String groupId, @PathVariable("userId") List<String> userIds) {
-        userGroupService.removeMember(groupId, userIds);
-    }
 
     /**
      * 校验用户组名称

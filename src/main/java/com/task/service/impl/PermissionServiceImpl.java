@@ -24,16 +24,16 @@ import com.task.service.IPermissionService;
 @Service
 @Transactional
 public class PermissionServiceImpl implements IPermissionService {
-
-    @Autowired
-    private PermissionMapper permissionMapper;
-
-    @Override
-    public List<Permission> getByUserAndModuleCode(User user, String permissionCode) {
-        List<Permission> permissions = new ArrayList<>();
-        List<Permission> sysAdminPermissions = permissionMapper.selectByNameAndCode(user.getSysRole(),permissionCode);
-        permissions.addAll(sysAdminPermissions);
-        permissions = permissions.stream().distinct().collect(Collectors.toList());
-        return permissions;
-    }
+//
+//    @Autowired
+//    private PermissionMapper permissionMapper;
+//
+//    @Override
+//    public List<Permission> getByUserAndModuleCode(User user, String permissionCode) {
+//        List<Permission> permissions = new ArrayList<>();
+//        List<Permission> sysAdminPermissions = permissionMapper.selectByNameAndCode(user.getSysRole(),permissionCode);
+//        permissions.addAll(sysAdminPermissions);
+//        permissions = permissions.stream().distinct().collect(Collectors.toList());
+//        return permissions;
+//    }
 }

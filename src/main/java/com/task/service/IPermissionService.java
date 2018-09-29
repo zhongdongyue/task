@@ -20,6 +20,6 @@ public interface IPermissionService {
      * @param permissionCode 功能模块编码
      * @return
      */
-    List<Permission> getByUserAndModuleCode(User user, String permissionCode);
+//    List<Permission> getByUserAndModuleCode(User user, String permissionCode);
 
 }

@@ -42,8 +42,7 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void create(@RequestBody User user, String password, String orgId) {
-        user.setPassword(password);
+    public void create(@RequestBody User user) {
         userService.create(user);
     }
 
@@ -54,10 +53,9 @@ public class UserController {
      * @param user 用户信息
      * @return 修改后的用户信息
      */
-    @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
+    @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public User update(@PathVariable("id") String userId, @RequestBody User user) {
-        user.setId(userId);
+    public User update(@RequestBody User user) {
         return userService.update(user);
     }
 
@@ -84,13 +82,18 @@ public class UserController {
     /**
      * 校验帐号是否可用
      *
-     * @param account 用户帐号
+     * @param userName 用户帐号
      * @return 帐号校验结果
      */
-    @RequestMapping(value = "account/validation", method = RequestMethod.GET)
+    @RequestMapping(value = "username/validation", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean validateAccount(String account) {
-        return userService.validateAccount(account);
+    public Boolean validateAccount(String userName) {
+        User user = userService.getByName(userName);
+        if(user == null){
+            return Boolean.TRUE;
+        }else {
+            return Boolean.FALSE;
+        }
     }
 
 }

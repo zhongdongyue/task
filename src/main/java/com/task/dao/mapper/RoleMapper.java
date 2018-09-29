@@ -14,4 +14,6 @@ public interface RoleMapper {
     List<Role> selectAll();
 
     int updateByPrimaryKey(Role record);
+
+    Role selectByName(String name);
 }
