@@ -83,6 +83,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "{userId}",method = RequestMethod.DELETE)
+    @ResponseBody
     public ResponseData delete(@PathVariable("userId") String userId){
         userService.delete(userId);
         return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
