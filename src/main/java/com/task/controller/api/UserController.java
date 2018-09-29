@@ -45,8 +45,9 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void create(@RequestBody User user) {
+    public ResponseData create(@RequestBody User user) {
         userService.create(user);
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
     }
 
 
@@ -58,8 +59,8 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public User update(@RequestBody User user) {
-        return userService.update(user);
+    public ResponseData<User> update(@RequestBody User user) {
+        return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,userService.update(user));
     }
 
     /**
