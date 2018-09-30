@@ -19,9 +19,12 @@
 
 <body>
 <div class="weadmin-body">
+    <div class="weadmin-block">
+        <button class="layui-btn" id="add_group"><i class="layui-icon"></i>创建用户组</button>
+    </div>
     <table id="LAY-group-list" lay-filter="LAY-group-list"></table>
     <script type="text/html" id="table-group-list">
-        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>-->
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
     </script>
 </div>
@@ -43,7 +46,7 @@
                 [{
                     field: "id", width: 80, title: "ID", hide:true
                 }, {
-                    field: "name", title: "用户名"
+                    field: "name", title: "名称"
                 }, {
                     field: "description", title: "描述"
                 }, {
@@ -115,6 +118,42 @@
                     }
                 })
             }
+        });
+        jquery("#add_group").on("click", function () {
+            layer.open({
+                type: 2,
+                title: "创建用户组",
+                content: "/group/add",
+                area: ["90%", "90%"],
+                btn: ["确定", "取消"],
+                yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe'+ index];
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(add_group)', function(data){
+                        var field = data.field; //获取提交的字段
+                        jquery.ajax({
+                            type: 'POST',
+                            url: "/api/userGroups",
+                            data: JSON.stringify(field),
+                            contentType: 'application/json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.code == "200") {
+                                    table.reload('LAY-group-list'); //数据刷新
+                                    layer.close(index); //关闭弹层
+                                } else {
+                                    layer.close(index); //关闭弹层
+                                    layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    });
+
+                    iframeWindow.layui.jquery("#add_group").click()
+                },
+                success: function (e, t) {
+                }
+            })
         });
     });
 </script>
