@@ -69,12 +69,30 @@
                         </ul>
                         </#if>
                     </li>
-                    <li>
-                        <a _href="/group/list">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>用户组管理</cite>
-                        </a>
-                    </li>
+                    <#if USER_ATTR.roleName == 'general_user' && USER_ATTR.status != 2>
+                        <li>
+                            <a _href="/user/receive">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户权限申请</cite>
+                            </a>
+                        </li>
+                    </#if>
+                    <#if USER_ATTR.roleName == 'admin'|| USER_ATTR.roleName == 'general_admin'>
+                        <li>
+                            <a _href="/user/apply">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户权限审批</cite>
+                            </a>
+                        </li>
+                    </#if>
+                    <#if USER_ATTR.roleName == 'admin'>
+                        <li>
+                            <a _href="/group/list">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户组管理</cite>
+                            </a>
+                        </li>
+                    </#if>
                 </ul>
             </li>
             <li>

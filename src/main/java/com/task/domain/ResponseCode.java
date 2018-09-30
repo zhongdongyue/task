@@ -52,6 +52,9 @@ public class ResponseCode {
     /** 用户组无法删除*/
     public static final int USER_GROUP_CAN_NOT_DELETE = 3007;
 
+    /** 用户组无法删除*/
+    public static final int USER_NOT_EXIT = 3008;
+
     /**用户名或密码不正确*/
     public static final  int USERNAME_OR_PASSWORD_ERROR = 3100;
     /**用户已被添加到用户组*/

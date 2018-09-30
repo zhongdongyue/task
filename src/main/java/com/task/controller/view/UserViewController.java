@@ -80,4 +80,14 @@ public class UserViewController extends BaseController {
     public String rule() {
         return "/user/rule";
     }
+
+    @RequestMapping(value = "apply", method = RequestMethod.GET)
+    public String apply() {
+        return "/user/apply";
+    }
+
+    @RequestMapping(value = "receive", method = RequestMethod.GET)
+    public String receive() {
+        return "/user/receive";
+    }
 }

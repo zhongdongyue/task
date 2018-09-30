@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public Pager<User> getPageByGroupId(int pageNum, int pageSize, String groupId) {
         PageInfo<User> sqlPage = new PageInfo<>(userMapper.selectByGroupId(pageNum,pageSize,groupId));
         return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
-    }
+}
 
     @Override
     public void updatePassword(String userName, String oldPwd, String password) {
@@ -115,4 +115,32 @@ public class UserServiceImpl implements UserService {
         userMapper.deleteByPrimaryKey(id);
     }
 
+
+    @Override
+    public Pager<User> getAapplyPage(int pageNum, int pageSize) {
+        PageInfo<User> sqlPage = new PageInfo<>(userMapper.selectApplyPage(pageNum,pageSize));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
+    }
+
+    @Override
+    public void applyPass(String userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user==null){
+            throw new BusinessException(ResponseCode.USER_NOT_EXIT,"用户不存在");
+        }
+        user.setStatus(0);
+        Role role = roleMapper.selectByName("receive_user");
+        user.setRoleId(role.getId());
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public void applyRefuse(String userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user==null){
+            throw new BusinessException(ResponseCode.USER_NOT_EXIT,"用户不存在");
+        }
+        user.setStatus(2);
+        userMapper.updateByPrimaryKey(user);
+    }
 }

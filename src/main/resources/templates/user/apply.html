@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/weadmin.css">
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	</head>
+
+	<body>
+		<div class="weadmin-body">
+			<table id="LAY-apply-list" lay-filter="LAY-apply-list"></table>
+			<script type="text/html" id="table-apply-list">
+				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>通过</a>
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>拒绝</a>
+			</script>
+		</div>
+<script src="/layui/layui.js" charset="utf-8"></script>
+<script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	layui.use(['table','jquery','layer'], function () {
+		var table = layui.table;
+        var $ = layui.$;
+        var layer = layui.layer;
+        var jquery = layui.jquery;
+		table.render({
+			elem: "#LAY-apply-list",
+			url: "/api/users/applys",
+			page: true, //开启分页
+			cols: [
+				[ {
+                    field: "id", width: 80, title: "ID", hide:true
+                }, {
+                    field: "username", title: "用户名"
+                }, {
+                    field: "phone", title: "手机号"
+                }, {
+                    field: "groupName", title: "所属组"
+                }, {
+                    field: "roleDescription", title: "角色"
+                },{
+                    field: "createTime", title: "创建时间"  , templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
+                },{
+					title: "操作",
+					width: 150,
+					align: "center",
+					fixed: "right",
+					toolbar: "#table-apply-list"
+				}]
+			],
+			text: "对不起，加载出现异常！"
+		});
+        table.on("tool(LAY-apply-list)", function (e) {
+            if ("edit" === e.event) {
+                layer.confirm("确认通过权限？", function (t) {
+                    jquery.ajax({
+                        type: 'POST',
+                        url: "/api/users/apply/pass/" + e.data.id,
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.code == "200") {
+                                e.del(), layer.close(t)
+                            } else {
+                                layer.open({content: data.message, shade: [0.8, '#393D49']});
+                            }
+                        },
+                        dataType: "json"
+                    });
+                });
+            }else if ("del" === e.event) {
+                layer.confirm("确认拒绝权限？", function (t) {
+                    jquery.ajax({
+                        type: 'POST',
+                        url: "/api/users/apply/refuse/" + e.data.id,
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.code == "200") {
+                                e.del(), layer.close(t)
+                            } else {
+                                layer.open({content: data.message, shade: [0.8, '#393D49']});
+                            }
+                        },
+                        dataType: "json"
+                    });
+                });
+            }
+        });
+	});
+</script>
+	</body>
+
+</html>

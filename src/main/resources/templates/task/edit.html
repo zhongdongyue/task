@@ -25,26 +25,28 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="name" name="name" required="" lay-verify="required"
-                       autocomplete="off" class="layui-input">
+                       autocomplete="off" class="layui-input" value="${task.name}">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">任务描述</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="description" name="description"  class="layui-textarea"></textarea>
+                <textarea placeholder="请输入内容" id="description" name="description" class="layui-textarea">${task.description}</textarea>
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">任务内容</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="content" name="content"  class="layui-textarea"></textarea>
+                <textarea placeholder="请输入内容" id="content" name="content" class="layui-textarea">${task.content}</textarea>
             </div>
         </div>
-
         <div class="layui-form-item" hidden>
-            <button  class="layui-btn" lay-filter="add_task" id="add_task" lay-submit="">增加</button>
+            <input type="text" class="layui-input" value="${task.id}" id="taskId" name="taskId"/>
+        </div>
+        <div class="layui-form-item" hidden>
+            <button  class="layui-btn" lay-filter="update" lay-submit="" id="task_edit_submit">确认</button>
         </div>
     </form>
 </div>

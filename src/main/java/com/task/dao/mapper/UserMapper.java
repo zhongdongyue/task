@@ -42,4 +42,7 @@ public interface UserMapper {
      * @return
      */
     User selectByNameAndPassword(@Param("userName") String userName, @Param("password") String password);
+
+
+    List<User> selectApplyPage(@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
 }

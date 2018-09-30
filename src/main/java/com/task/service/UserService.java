@@ -88,4 +88,16 @@ public interface UserService {
      * @return
      */
     Pager<User> getPageByGroupId(int pageNum, int pageSize, String groupId);
+
+    /**
+     * 获取申请领取权限的列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Pager<User> getAapplyPage(int pageNum,int pageSize);
+
+    void applyPass(String userId);
+
+    void applyRefuse(String userId);
 }

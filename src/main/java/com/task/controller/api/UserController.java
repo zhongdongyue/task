@@ -1,15 +1,19 @@
 package com.task.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.task.domain.ResponseData;
-import com.task.domain.ResponseMessage;
+import com.task.domain.*;
+import com.task.domain.SessionAttribute;
 import com.task.entity.User;
+import com.task.exception.BusinessException;
 import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * 用户管理 视图控制器
@@ -106,4 +110,78 @@ public class UserController {
         }
     }
 
+    /**
+     * 获取申请权限列表
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "applys")
+    public ResponseData<User> getApplyUser(int page,int limit){
+        Pager pages = userService.getAapplyPage(page,limit);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "apply/pass/{id}",method = RequestMethod.POST)
+    public ResponseData applyPass(@PathVariable("id") String userId){
+        userService.applyPass(userId);
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
+    }
+    @ResponseBody
+    @RequestMapping(value = "apply/refuse/{id}",method = RequestMethod.POST)
+    public ResponseData applyRefuse(@PathVariable("id") String userId){
+        userService.applyRefuse(userId);
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
+    }
+
+    /**
+     * 用户申请权限
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "receive")
+    public ResponseData<User> getReceiveUser(HttpSession session,int page, int limit){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        user = userService.getById(user.getId());
+        if(user == null){
+            throw new BusinessException(ResponseCode.USER_NOT_EXIT,"用户不存在");
+        }
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount(1);
+        responseData.setData(users);
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
+    }
+
+
+    /**
+     * 用户申请权限
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "receive/{id}",method = RequestMethod.POST)
+    public ResponseData<User> getReceiveUser(@PathVariable("id") String id){
+        User user = userService.getById(id);
+        if(user == null){
+            throw new BusinessException(ResponseCode.USER_NOT_EXIT,"用户不存在");
+        }
+        user.setStatus(1);
+        userService.update(user);
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
+    }
 }

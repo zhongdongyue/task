@@ -87,9 +87,9 @@
             }else if ("edit" === e.event) {
                 layer.open({
                     type: 2,
-                    title: "编辑用户",
+                    title: "编辑任务",
                     content: "/task/edit?taskId=" + e.data.id,
-                    area: ["500px", "400px"],
+                    area: ["90%", "90%"],
                     btn: ["确定", "取消"],
                     yes: function (index, layero) {
                         var iframeWindow = window['layui-layer-iframe'+ index];
@@ -100,14 +100,15 @@
                                 type: 'PUT',
                                 url: "/api/tasks",
                                 data: JSON.stringify({
-                                    "id": field.userId,
-                                    "roleId": field.roleId,
-                                    "groupId": field.groupId
+                                    "id": field.taskId,
+                                    "name": field.name,
+                                    "description": field.description,
+                                    "content": field.content,
                                 }),
                                 contentType: 'application/json',
                                 success: function (data, textStatus, jqXHR) {
                                     if (data.code == "200") {
-                                        table.reload('LAY-user-list'); //数据刷新
+                                        table.reload('LAY-manager-list'); //数据刷新
                                         layer.close(index); //关闭弹层
                                     } else {
                                         layer.close(index); //关闭弹层
@@ -118,7 +119,7 @@
                             });
                         });
 
-                        iframeWindow.layui.jquery("#admin_edit_submit").click()
+                        iframeWindow.layui.jquery("#task_edit_submit").click()
                     },
                     success: function (e, t) {
                     }

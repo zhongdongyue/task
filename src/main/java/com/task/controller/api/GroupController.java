@@ -1,17 +1,21 @@
 package com.task.controller.api;
 
 import com.task.controller.BaseController;
-import com.task.domain.ResponseData;
-import com.task.domain.ResponseMessage;
+import com.task.domain.*;
+import com.task.domain.SessionAttribute;
 import com.task.entity.Group;
 import com.task.entity.User;
+import com.task.exception.BusinessException;
 import com.task.service.IGroupService;
 import com.task.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.task.domain.Pager;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户组 视图控制器
@@ -54,15 +58,32 @@ public class GroupController extends BaseController {
      */
     @RequestMapping(value = "{groupId}/users", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<User> getUserGroupMembers(@PathVariable("groupId") String groupId, int page, int limit) {
-         Pager pages = userService.getPageByGroupId(page,limit,groupId);
-         ResponseData responseData = new ResponseData();
-         responseData.setCount((int)pages.getTotalRow());
-         responseData.setData(pages.getRecords());
-         responseData.setCode(0);
-         responseData.setMessage(ResponseMessage.SUCCESS);
-         responseData.setMsg("");
-         return responseData;
+    public ResponseData<User> getUserGroupMembers(HttpSession session,@PathVariable("groupId") String groupId, int page, int limit) {
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        user = userService.getById(user.getId());
+        if(user == null){
+            throw new BusinessException(ResponseCode.USER_NOT_EXIT,"用户不存在");
+        }
+        if("general_user".equals(user.getRoleName())||"receive_user".equals(user.getRoleName())){
+            List<User> users = new ArrayList<>();
+            users.add(user);
+            ResponseData responseData = new ResponseData();
+            responseData.setCount(1);
+            responseData.setData(users);
+            responseData.setCode(0);
+            responseData.setMessage(ResponseMessage.SUCCESS);
+            responseData.setMsg("");
+            return responseData;
+        }else {
+            Pager pages = userService.getPageByGroupId(page,limit,groupId);
+            ResponseData responseData = new ResponseData();
+            responseData.setCount((int)pages.getTotalRow());
+            responseData.setData(pages.getRecords());
+            responseData.setCode(0);
+            responseData.setMessage(ResponseMessage.SUCCESS);
+            responseData.setMsg("");
+            return responseData;
+        }
     }
 
 
