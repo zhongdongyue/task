@@ -78,7 +78,7 @@ public interface UserService {
      * @param oldPwd
      * @param password
      */
-    void updatePassword(String userName, String oldPwd, String password);
+    void updatePassword(String userName, String oldPwd, String password,String phone);
 
     /**
      * 分页查询

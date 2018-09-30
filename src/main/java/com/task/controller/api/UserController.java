@@ -70,10 +70,12 @@ public class UserController {
     /**
      * 修改密码
      */
-    @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
+    @RequestMapping(value = "info", method = RequestMethod.PUT)
     @ResponseBody
-    public void updatePassword(@PathVariable("id") String userId, String oldPwd,String password) {
-        userService.updatePassword(userId, oldPwd, password);
+    public ResponseData updatePassword(HttpSession session,String phone, String oldPwd,String password) {
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        userService.updatePassword(user.getUsername(), oldPwd, password,phone);
+        return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
     }
 
     /**

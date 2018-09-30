@@ -90,4 +90,14 @@ public class UserViewController extends BaseController {
     public String receive() {
         return "/user/receive";
     }
+
+    @RequestMapping(value = "userEdit", method = RequestMethod.GET)
+    public ModelAndView userEdit(HttpSession session,ModelMap map) {
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        if (user == null) {
+            throw new BusinessException(404,"用户不存在");
+        }
+        map.put("user", user);
+        return new ModelAndView("/user/user_edit", map);
+    }
 }

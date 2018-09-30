@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByAccountAndPwd(String userName, String password) {
-//        password = MD5Util.encode(password,null);
+        password = MD5Util.encode(password,null);
         return userMapper.selectByNameAndPassword(userName, password);
     }
 
@@ -66,11 +66,16 @@ public class UserServiceImpl implements UserService {
 }
 
     @Override
-    public void updatePassword(String userName, String oldPwd, String password) {
+    public void updatePassword(String userName, String oldPwd, String password,String phone) {
         User accountUser = getByAccountAndPwd(userName, oldPwd);
         if (accountUser == null) {
             throw new BusinessException(ResponseCode.OLD_PASSWORD_ERROR,"旧密码有误");
         }
+        password = MD5Util.encode(password,null);
+        accountUser.setPassword(password);
+        accountUser.setPhone(phone);
+        userMapper.updateByPrimaryKey(accountUser);
+
     }
 
 

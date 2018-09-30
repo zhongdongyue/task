@@ -1,5 +1,6 @@
 package com.task.interceptor;
 
+import com.task.domain.SessionAttribute;
 import com.task.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse resp, Object handler) throws Exception {
         if (enableAuth) {
-            User user = (User) request.getSession().getAttribute("user");
+            User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
             if(user == null){
                 resp.sendRedirect(request.getContextPath()+"/login");
                 return false;
