@@ -27,6 +27,16 @@ public class User {
 
     private String roleDescription;
 
+    private String oldPwd;
+
+    public String getOldPwd() {
+        return oldPwd;
+    }
+
+    public void setOldPwd(String oldPwd) {
+        this.oldPwd = oldPwd;
+    }
+
     public String getId() {
         return id;
     }

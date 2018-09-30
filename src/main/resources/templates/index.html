@@ -173,11 +173,10 @@
                         jquery.ajax({
                             type: 'PUT',
                             url: "/api/users/info",
-                            data: JSON.stringify({
-                                "phone": field.phone,
-                                "oldPwd": field.oldPwd,
-                                "password": field.password,
-                            }),
+                            contentType: 'application/json',
+                            data: JSON.stringify(
+                                data.field
+                            ),
                             success: function (data, textStatus, jqXHR) {
                                 if (data.code == "200") {
                                     location.href='./login';

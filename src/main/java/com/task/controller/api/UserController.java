@@ -63,7 +63,11 @@ public class UserController {
      */
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseData<User> update(@RequestBody User user) {
+    public ResponseData<User> update(HttpSession session,@RequestBody User user) {
+        User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
+        if(sessionUser.getRoleName().equals("general_user") || sessionUser.getRoleName().equals("receive_user")){
+            throw new BusinessException(ResponseCode.NO_PERMISSION,"权限不足，无法操作");
+        }
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,userService.update(user));
     }
 
@@ -72,9 +76,9 @@ public class UserController {
      */
     @RequestMapping(value = "info", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseData updatePassword(HttpSession session,String phone, String oldPwd,String password) {
-        User user = (User) session.getAttribute(SessionAttribute.USER);
-        userService.updatePassword(user.getUsername(), oldPwd, password,phone);
+    public ResponseData updatePassword(HttpSession session,@RequestBody User user) {
+        User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
+        userService.updatePassword(sessionUser.getUsername(), user.getOldPwd(), user.getPassword(),user.getPhone());
         return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
     }
 
@@ -91,7 +95,11 @@ public class UserController {
 
     @RequestMapping(value = "{userId}",method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseData delete(@PathVariable("userId") String userId){
+    public ResponseData delete(HttpSession session ,@PathVariable("userId") String userId){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        if(user.getId().equals(userId)){
+            throw new BusinessException(ResponseCode.NO_PERMISSION,"无法删除自身账号");
+        }
         userService.delete(userId);
         return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
     }
@@ -163,10 +171,17 @@ public class UserController {
         users.add(user);
         ResponseData responseData = new ResponseData();
         responseData.setCount(1);
-        responseData.setData(users);
         responseData.setCode(0);
         responseData.setMessage(ResponseMessage.SUCCESS);
         responseData.setMsg("");
+
+        if(user.getStatus() ==1){
+            responseData.setData(null);
+
+        }else {
+            responseData.setData(users);
+        }
+
         return responseData;
     }
 

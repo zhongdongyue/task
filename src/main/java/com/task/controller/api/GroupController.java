@@ -74,16 +74,15 @@ public class GroupController extends BaseController {
             responseData.setMessage(ResponseMessage.SUCCESS);
             responseData.setMsg("");
             return responseData;
-        }else {
-            Pager pages = userService.getPageByGroupId(page,limit,groupId);
-            ResponseData responseData = new ResponseData();
-            responseData.setCount((int)pages.getTotalRow());
-            responseData.setData(pages.getRecords());
-            responseData.setCode(0);
-            responseData.setMessage(ResponseMessage.SUCCESS);
-            responseData.setMsg("");
-            return responseData;
-        }
+        }else {}
+        Pager pages = userService.getPageByGroupId(page,limit,groupId);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
     }
 
 

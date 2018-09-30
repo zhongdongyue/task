@@ -18,7 +18,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
     private AuthInterceptor authInterceptor;
 
     private static final String[] excludePatterns = {"/login", "/api/login","/api/regist", "/login.html", "/error/**"
-            ,"/css/**","/layui/**", "/js/**","/fonts/**","/images/**"};
+            ,"/css/**","/layui/**", "/js/**","/fonts/**","/images/**" ,"/reg"};
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
