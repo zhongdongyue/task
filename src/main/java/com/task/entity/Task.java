@@ -27,6 +27,8 @@ public class Task {
 
     private Date receiveTime;
 
+    private String imageData;
+
     public String getId() {
         return id;
     }
@@ -123,6 +125,14 @@ public class Task {
         this.receiveTime = receiveTime;
     }
 
+    public String getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(String imageData) {
+        this.imageData = imageData;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -138,6 +148,7 @@ public class Task {
                 ", creatorName='" + creatorName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", receiveTime=" + receiveTime +
+                ", imageData='" + imageData + '\'' +
                 '}';
     }
 }

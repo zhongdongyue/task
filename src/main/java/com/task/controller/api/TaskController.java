@@ -75,6 +75,7 @@ public class TaskController extends BaseController {
     public ResponseData insert(HttpSession session,Task task){
         User user = (User) session.getAttribute(SessionAttribute.USER);
         task.setCreatorId(user.getId());
+        task.setStatus(0);
         taskService.insert(task);
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }

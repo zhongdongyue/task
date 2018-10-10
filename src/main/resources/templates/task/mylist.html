@@ -20,11 +20,12 @@
 		<div class="weadmin-body">
 			<table id="LAY-my-task" lay-filter="LAY-my-task"></table>
 			<script type="text/html" id="table-my-task">
-				{{#  if(d.status == 2){ }}
+				{{#  if(d.status == 1){ }}
 				 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>点击完成任务</a>
 				{{#  } else { }}
 				<a class="layui-btn-xs" ><i class="layui-icon"></i>已完成</a>
 				{{#  } }}
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="info"><i class="layui-icon layui-icon-delete"></i>详情</a>
 			</script>
 		</div>
 <script src="/layui/layui.js" charset="utf-8"></script>
@@ -57,7 +58,7 @@
                     field: "createTime", title: "创建时间" , templet: '<div>{{ Format(d.createTime,"yyyy-MM-dd hh:mm:ss")}}</div>'
                 },{
 					title: "操作",
-					width: 150,
+					width: 200,
 					align: "center",
 					fixed: "right",
 					toolbar: "#table-my-task"
@@ -81,6 +82,17 @@
                         dataType: "json"
                     });
                 });
+            }else if("info" === e.event){
+                layer.open({
+                    type: 2,
+                    title: "任务详情",
+                    content: "/task/info?taskId=" + e.data.id,
+                    area: ["90%", "90%"],
+                    yes: function (index, layero) {
+                    },
+                    success: function (e, t) {
+                    }
+                })
             }
         });
 	});

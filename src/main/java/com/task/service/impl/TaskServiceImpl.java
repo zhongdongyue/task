@@ -47,7 +47,9 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public void updateByPrimaryKey(Task task) {
+        Task oldTask = taskMapper.selectByPrimaryKey(task.getId());
         task.setUpdateTime(new Date());
+
         taskMapper.updateByPrimaryKey(task);
     }
 

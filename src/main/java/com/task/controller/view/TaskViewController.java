@@ -51,4 +51,14 @@ public class TaskViewController extends BaseController {
         map.put("task",task);
         return new ModelAndView("/task/edit");
     }
+
+    @RequestMapping(value = "info", method = RequestMethod.GET)
+    public ModelAndView info(@RequestParam(value = "taskId") String taskId, ModelMap map) {
+        Task task = taskService.selectByPrimaryKey(taskId);
+        if(task == null){
+            throw new BusinessException(ResponseCode.TASK_NOT_EXIST,"任务不存在");
+        }
+        map.put("task",task);
+        return new ModelAndView("/task/info");
+    }
 }

@@ -21,25 +21,25 @@
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="name" class="layui-form-label">
-                <span class="we-red">*</span>任务名称
+                <span class="we-red">*</span>任务名称:
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="name" name="name" required="" lay-verify="required"
-                       autocomplete="off" class="layui-input" value="${task.name}">
+                       autocomplete="off" class="layui-input" value="${task.name}" readonly = "true">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">任务描述</label>
+            <label class="layui-form-label">任务描述:</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="description" name="description" class="layui-textarea">${task.description}</textarea>
+                <textarea placeholder="请输入内容" id="description" name="description" class="layui-textarea" readonly = "true">${task.description}</textarea>
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">任务内容</label>
+            <label class="layui-form-label">任务内容:</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="content" name="content" class="layui-textarea">${task.content}</textarea>
+                <textarea placeholder="请输入内容" id="content" name="content" class="layui-textarea" readonly = "true">${task.content}</textarea>
             </div>
         </div>
         <div class="layui-form-item" hidden>
@@ -47,17 +47,13 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">图片</label>
+            <label class="layui-form-label">图片:</label>
             <div class="layui-input-block">
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="demo1" src = ${task.imageData}>
+                    <img class="layui-upload-img" id="demo1" src = "${task.imageData!'null'}">
                     <p id="demoText"></p>
                 </div>
             </div>
-        </div>
-
-        <div class="layui-form-item" hidden>
-            <button  class="layui-btn" lay-filter="update" lay-submit="" id="task_edit_submit">确认</button>
         </div>
     </form>
 </div>

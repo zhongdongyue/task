@@ -38,6 +38,10 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     public void delete(String groupId) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        if("默认分组".equals(group.getName())){
+            throw new BusinessException(3011,"默认分组无法删除");
+        }
         List<User> users = userMapper.selectByGroupId(1,1,groupId);
         if(users!=null && !users.isEmpty()){
             throw new BusinessException(ResponseCode.USER_GROUP_CAN_NOT_DELETE,"用户组下存在用户，无法删除");
