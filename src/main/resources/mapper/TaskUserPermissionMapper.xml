@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.task.dao.mapper.TaskUserPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.task.entity.TaskUserPermission">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from task_user_permission
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.task.entity.TaskUserPermission" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(UUID(), '-', '')
+    </selectKey>
+    insert into task_user_permission (id, `user_id`, task_id,
+      `status`,create_time, update_time,receive_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.task.entity.TaskUserPermission">
+    update task_user_permission
+    <set>
+      <if test="userId != null">
+        `user_id` = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null">
+        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id , user_id,task_id ,status,create_time,update_time,receive_time
+    FROM task_user_permission
+    WHERE task_id = #{taskId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUserIdAndTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id , user_id,task_id ,status,create_time,update_time,receive_time
+    FROM task_user_permission
+    WHERE task_id = #{taskId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户下是否有未完成任务-->
+  <select id="selectUncomplete" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id , user_id,task_id ,status,create_time,update_time,receive_time
+    FROM task_user_permission
+    WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 0
+  </select>
+
+
+  <!--查看用户20分钟内领取的任务-->
+  <select id="selectMinuteByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id , user_id,task_id ,status,create_time,update_time,receive_time
+    FROM task_user_permission
+    WHERE receive_time >= now()-interval 20 MINUTE AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查看用户当天领取了多少任务-->
+  <select id="selectByDays" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT id , user_id,task_id ,status,create_time,update_time,receive_time
+    FROM task_user_permission
+    where to_days(receive_time) = to_days(now()) AND user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByTaskId" parameterType="java.lang.String">
+    delete from task_user_permission
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </delete>
+
+  <!--查询领取任务的用户名称集合-->
+  <select id="getTaskUserNames" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT u.username
+    FROM task_user_permission tup
+    LEFT JOIN user u ON u.id = tup.user_id
+    where tup.task_id = #{taskId,jdbcType=VARCHAR}
+  </select>
+</mapper>

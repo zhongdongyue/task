@@ -13,8 +13,6 @@ public class Task {
 
     private String creatorId;
 
-    private String userId;
-
     private Date createTime;
 
     private Date updateTime;
@@ -67,14 +65,6 @@ public class Task {
 
     public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public Date getCreateTime() {
@@ -141,7 +131,6 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", creatorId='" + creatorId + '\'' +
-                ", userId='" + userId + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", content='" + content + '\'' +

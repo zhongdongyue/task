@@ -1,12 +1,11 @@
 package com.task.controller.api;
 
 import com.task.controller.BaseController;
-import com.task.domain.Pager;
-import com.task.domain.ResponseData;
-import com.task.domain.ResponseMessage;
+import com.task.domain.*;
 import com.task.domain.SessionAttribute;
 import com.task.entity.Task;
 import com.task.entity.User;
+import com.task.exception.BusinessException;
 import com.task.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,6 +73,9 @@ public class TaskController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseData insert(HttpSession session,Task task){
         User user = (User) session.getAttribute(SessionAttribute.USER);
+        if(user.getRoleName().equals("general_user")){
+            throw new BusinessException(ResponseCode.NOT_TASK_PERMISSION,"无权限操作");
+        }
         task.setCreatorId(user.getId());
         task.setStatus(0);
         taskService.insert(task);
@@ -82,21 +84,30 @@ public class TaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseData update(@RequestBody Task task){
+    public ResponseData update(HttpSession session,@RequestBody Task task){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        if(user.getRoleName().equals("general_user")){
+            throw new BusinessException(ResponseCode.NOT_TASK_PERMISSION,"无权限操作");
+        }
         taskService.updateByPrimaryKey(task);
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody
     @RequestMapping(value = "complete/{taskId}",method = RequestMethod.POST)
-    public ResponseData complete(@PathVariable("taskId") String id){
-        taskService.complete(id);
+    public ResponseData complete(HttpSession session,@PathVariable("taskId") String id){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        taskService.complete(id,user.getId());
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }
 
     @ResponseBody
     @RequestMapping(value ="{id}",method = RequestMethod.DELETE)
-    public ResponseData delete(@PathVariable("id") String id){
+    public ResponseData delete(HttpSession session,@PathVariable("id") String id){
+        User user = (User) session.getAttribute(SessionAttribute.USER);
+        if(user.getRoleName().equals("general_user")){
+            throw new BusinessException(ResponseCode.NOT_TASK_PERMISSION,"无权限操作");
+        }
         taskService.deleteByPrimaryKey(id);
         return ResponseData.success(HttpStatus.OK.value(),ResponseMessage.SUCCESS,null);
     }

@@ -56,7 +56,13 @@ public class ResponseCode {
     public static final int USER_NOT_EXIT = 3008;
 
     /** 用户组无法删除*/
-    public static final int NO_PERMISSION = 3008;
+    public static final int NO_PERMISSION = 3009;
+
+    /** 任务领取个数超出*/
+    public static final int TASK_RECEIVE_COUNT_OUT = 3010;
+
+    /** 任务已被领取*/
+    public static final int TASK_RECEIVED= 3011;
 
     /**用户名或密码不正确*/
     public static final  int USERNAME_OR_PASSWORD_ERROR = 3100;

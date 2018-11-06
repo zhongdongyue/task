@@ -7,7 +7,6 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -25,11 +24,11 @@
       select replace(UUID(), '-', '')
     </selectKey>
     insert into task (id, `name`, description, 
-      `status`, creator_id, user_id, 
+      `status`, creator_id,
       create_time, update_time, content,image_data,receive_time
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR},
       #{imageData,jdbcType=LONGVARCHAR},#{receiveTime,jdbcType=TIMESTAMP}
       )
@@ -48,9 +47,6 @@
       </if>
       <if test="creatorId != null">
         creator_id = #{creatorId,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -72,67 +68,41 @@
   </update>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name, t.creator_id, t.user_id,t.create_time, t.update_time,
+    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, t.creator_id,t.create_time, t.update_time,
     t.content,t.receive_time,t.image_data
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
-    LEFT JOIN user us ON t.user_id = us.id
     where t.id = #{id,jdbcType=VARCHAR}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
-    t.content,t.receive_time,t.image_data
+    select t.id, t.`name`, t.description, t.`status`, us.username AS creator_name,t.creator_id, t.create_time, t.update_time,
+    t.content,t.image_data
     from task t
-    LEFT JOIN user u ON t.creator_id = u.id
-    LEFT JOIN user us ON t.user_id = us.id
+    LEFT JOIN user us ON us.id = t.creator_id
   </select>
 
 
   <!--查看7天内任务-->
   <select id="selectPending" resultMap="BaseResultMap">
-     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
+     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name,t.creator_id, t.create_time, t.update_time,
     t.content,t.receive_time
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
-    LEFT JOIN user us ON t.user_id = us.id
     where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(t.create_time) AND
     t.status = 0
   </select>
 
 
-  <!--查看用户20分钟内领取的任务-->
-  <select id="selectMinuteByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
-    content,receive_time
-    FROM task
-    WHERE receive_time >= now()-interval 20 MINUTE AND user_id = #{userId,jdbcType=VARCHAR}
-  </select>
-
   <!--查看用户下任务-->
   <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-     select t.id, t.`name`, t.description, t.`status`, u.username AS creator_name, us.username AS user_name,t.creator_id, t.user_id, t.create_time, t.update_time,
-    t.content,t.receive_time
+     select t.id, t.`name`, t.description, tup.`status`, us.username AS creator_name, u.username AS user_name,t.creator_id, tup.user_id, t.create_time, t.update_time,
+    t.content,tup.receive_time
     from task t
-    LEFT JOIN user u ON t.creator_id = u.id
-    LEFT JOIN user us ON t.user_id = us.id
-    WHERE t.user_id = #{userId,jdbcType=VARCHAR}
-  </select>
-
-  <!--查看用户当天领取了多少任务-->
-  <select id="selectByDays" parameterType="java.lang.String" resultMap="BaseResultMap">
-     SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
-    content,receive_time
-    FROM task
-    where to_days(receive_time) = to_days(now()) AND user_id = #{userId,jdbcType=VARCHAR}
-  </select>
-
-  <!--查看用户下是否有未完成任务-->
-  <select id="selectUncomplete" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT id, `name`, description, `status`, creator_id, user_id, create_time, update_time,
-    content,receive_time
-    FROM task
-    WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 1
+    RIGHT JOIN task_user_permission tup ON tup.task_id = t.id
+    LEFT JOIN user u ON u.id = tup.user_id
+    LEFT JOIN user us ON us.id = t.creator_id
+    WHERE tup.user_id = #{userId,jdbcType=VARCHAR}
   </select>
 
 </mapper>

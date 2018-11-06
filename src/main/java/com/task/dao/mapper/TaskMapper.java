@@ -22,12 +22,6 @@ public interface TaskMapper {
      */
     List<Task> selectPending(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
 
-    /**
-     * 查询用户20分钟之内领取的任务
-     * @param userId
-     * @return
-     */
-    List<Task> selectMinuteByUserId(String userId);
 
     /**
      * 查询用户下任务
@@ -35,18 +29,5 @@ public interface TaskMapper {
      * @return
      */
     List<Task> selectByUserId(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize,@Param("userId") String userId);
-
-    /**
-     * 查询用户当天领取多少任务
-     * @param userId
-     * @return
-     */
-    List<Task>selectByDays(String userId);
-
-    /**
-     * 查看用户未完成任务
-     * @param id
-     */
-    Task selectUncomplete(String id);
 
 }

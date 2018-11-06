@@ -28,12 +28,6 @@ public interface ITaskService {
      */
     Pager<Task> selectPending(int pageNum, int size);
 
-    /**
-     * 查询用户20分钟之内领取的任务
-     * @param userId
-     * @return
-     */
-    List<Task> selectMinuteByUserId(String userId);
 
     /**
      * 查询用户下任务
@@ -49,18 +43,13 @@ public interface ITaskService {
      * @return
      */
     Pager<Task> selectAll(int pageNum,int pageSize);
-    /**
-     * 查询用户当前领取多少任务
-     * @param userId
-     * @return
-     */
-    List<Task>selectByDays(String userId);
 
     /**
      * 完成任务
      * @param id
+     * @param userId
      */
-    void complete(String id);
+    void complete(String id,String userId);
 
     /**
      * 领取任务
