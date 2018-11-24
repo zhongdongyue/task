@@ -12,19 +12,21 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/weadmin.css">
+    <link rel="stylesheet" href="/i_ft/iconfont.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
 
 </head>
 
-<body>
+<body id="tab-body">
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo">
-        <a>欢迎使用任务接单系统</a>
+    <div class="logo" id="logo-wrap">
+        <i class="i_ft i-daohang"></i>
+        <a><span class="welcome-text">欢迎使用</span>任务接单系统</a>
     </div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">${USER_ATTR.username}</a>
+            <a href="javascript:;"><span class="name">${USER_ATTR.username}</span></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd>
@@ -41,7 +43,7 @@
 <!-- 顶部结束 -->
 <!-- 中部开始 -->
 <!-- 左侧菜单开始 -->
-<div class="left-nav">
+<div class="left-nav" id="left-nav">
     <div id="side-nav">
         <ul id="nav">
             <li class="open">
@@ -127,11 +129,12 @@
             </li>
         </ul>
     </div>
+    <div id="close-left-nav" class="close-left-nav"></div>
 </div>
 <!-- <div class="x-slide_left"></div> -->
 <!-- 左侧菜单结束 -->
 <!-- 右侧主体开始 -->
-<div class="page-content">
+<div class="page-content" id="page-content">
     <div class="layui-tab tab" lay-filter="wenav_tab" id="WeTabTip" lay-allowclose="true">
         <ul class="layui-tab-title" id="tabName"></ul>
         <div class="layui-tab-content"></div>
@@ -194,6 +197,22 @@
                 success: function (e, t) {
                 }
             })
+        });
+        jquery("#logo-wrap").on("click", function(){
+            jquery("#tab-body").toggleClass("mini-show")
+        });
+        if(window.innerWidth > 768){
+            jquery("#tab-body").addClass("mini-show")
+        }
+        window.onresize = function(){
+            if(window.innerWidth > 768){
+                jquery("#tab-body").addClass("mini-show")
+            } else {
+                jquery("#tab-body").removeClass("mini-show")
+            }
+        }
+        jquery("#close-left-nav").on('click', function(){
+            jquery("#tab-body").removeClass("mini-show")
         });
     });
 </script>
