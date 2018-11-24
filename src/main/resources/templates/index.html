@@ -49,10 +49,40 @@
             <li class="open">
                 <a href="javascript:;">
                     <i class="iconfont">&#xe726;</i>
-                    <cite>管理员管理</cite>
+                    <cite>任务管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu" style="display: block;">
+                    <li>
+                        <a _href="/task/list" id="task-lobby-a">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>任务大厅</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/task/mylist">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>我的任务</cite>
+                        </a>
+                    </li>
+                    <#if USER_ATTR.roleName == 'admin'|| USER_ATTR.roleName == 'general_admin'>
+                        <li>
+                            <a _href="/task/manager">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>任务管理</cite>
+                            </a>
+                        </li>
+                    </#if>
+
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe726;</i>
+                    <cite>管理员管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
                     <li>
                         <a _href="/user/list">
                             <i class="iconfont">&#xe6a7;</i>
@@ -95,36 +125,6 @@
                             </a>
                         </li>
                     </#if>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe726;</i>
-                    <cite>任务管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/task/list" id="task-lobby-a">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>任务大厅</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="/task/mylist">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>我的任务</cite>
-                        </a>
-                    </li>
-                    <#if USER_ATTR.roleName == 'admin'|| USER_ATTR.roleName == 'general_admin'>
-                        <li>
-                            <a _href="/task/manager">
-                                <i class="iconfont">&#xe6a7;</i>
-                                <cite>任务管理</cite>
-                            </a>
-                        </li>
-                    </#if>
-
                 </ul>
             </li>
         </ul>
