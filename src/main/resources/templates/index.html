@@ -105,7 +105,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/task/list">
+                        <a _href="/task/list" id="task-lobby-a">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>任务大厅</cite>
                         </a>
@@ -214,6 +214,7 @@
         jquery("#close-left-nav").on('click', function(){
             jquery("#tab-body").removeClass("mini-show")
         });
+        jquery("#task-lobby-a").click();
     });
 </script>
 </body>
