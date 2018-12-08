@@ -45,4 +45,13 @@ public interface UserMapper {
 
 
     List<User> selectApplyPage(@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
+
+    /**
+     * 根据搜索添加查询申请权限用户列表
+     * @param pageNum
+     * @param pageSize
+     * @param content
+     * @return
+     */
+    List<User> searchApplyUserByContent(@Param("pageNum") int pageNum,@Param("pageSize") int pageSize,@Param("content") String content);
 }

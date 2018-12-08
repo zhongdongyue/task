@@ -139,6 +139,25 @@ public class UserController {
         return responseData;
     }
 
+    /**
+     * 申请搜索
+     * @param page
+     * @param limit
+     * @param content
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "applys/search")
+    public ResponseData<User> getApplySearchUser(int page,int limit,String content){
+        Pager pages = userService.searchApplyUserByContent(page,limit,content);
+        ResponseData responseData = new ResponseData();
+        responseData.setCount((int)pages.getTotalRow());
+        responseData.setData(pages.getRecords());
+        responseData.setCode(0);
+        responseData.setMessage(ResponseMessage.SUCCESS);
+        responseData.setMsg("");
+        return responseData;
+    }
 
     @ResponseBody
     @RequestMapping(value = "apply/pass/{id}",method = RequestMethod.POST)

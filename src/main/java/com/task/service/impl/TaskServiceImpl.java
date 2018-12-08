@@ -78,6 +78,27 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public Pager<Task> selectPending(int pageNum, int pageSize) {
         PageInfo<Task> sqlPage = new PageInfo<>(taskMapper.selectPending(pageNum,pageSize));
+        List<Task> tasks = sqlPage.getList();
+        if(tasks!=null&&!tasks.isEmpty()){
+            tasks.forEach((task) -> {
+                //获取任务剩余个数
+                List<TaskUserPermission> taskUserPermissions = taskUserPermissionMapper.selectByTaskId(task.getId());
+                if(null!=taskUserPermissions&&!taskUserPermissions.isEmpty()){
+                    task.setRemainderCount(taskCount-taskUserPermissions.size());
+                }else {
+                    task.setRemainderCount(taskCount);
+                }
+            });
+//            for(Task task:tasks){
+//                //获取任务剩余个数
+//                List<TaskUserPermission> taskUserPermissions = taskUserPermissionMapper.selectByTaskId(task.getId());
+//                if(null!=taskUserPermissions&&!taskUserPermissions.isEmpty()){
+//                    task.setRemainderCount(taskCount-taskUserPermissions.size());
+//                }else {
+//                    task.setRemainderCount(taskCount);
+//                }
+//            }
+        }
         return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
     }
 

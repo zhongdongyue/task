@@ -27,6 +27,8 @@ public class Task {
 
     private String imageData;
 
+    private int remainderCount;
+
     public String getId() {
         return id;
     }
@@ -123,6 +125,14 @@ public class Task {
         this.imageData = imageData;
     }
 
+    public int getRemainderCount() {
+        return remainderCount;
+    }
+
+    public void setRemainderCount(int remainderCount) {
+        this.remainderCount = remainderCount;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -138,6 +148,7 @@ public class Task {
                 ", userName='" + userName + '\'' +
                 ", receiveTime=" + receiveTime +
                 ", imageData='" + imageData + '\'' +
+                ", remainderCount=" + remainderCount +
                 '}';
     }
 }
