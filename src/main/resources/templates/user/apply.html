@@ -30,6 +30,7 @@
 <script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
+	var asdlfjasdf = 'asdfasdf'
 	layui.use(['table','jquery','layer'], function () {
 		var table = layui.table;
         var $ = layui.$;
@@ -38,6 +39,9 @@
 		table.render({
 			elem: "#LAY-apply-list",
 			url: "/api/users/applys",
+			where: {
+			    type: asdlfjasdf
+			},
 			page: true, //开启分页
 			cols: [
 				[ {

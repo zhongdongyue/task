@@ -511,14 +511,15 @@ table td {
     border: 1px solid #ccc;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, .3);
     margin: 0 3px 15px;
-    padding: 0 5px;
+    padding: 0 5px 3px;
     border-radius: 5px;
   }
-  .layui-table tr td {
+  .layui-table-view .layui-table tr td {
     border-right: none;
     border-bottom: none;
     display: inline-block;
     width: 100%;
+    padding: 2px 0 0 0;
   }
   .layui-table tr td .layui-table-cell {
     width: calc(100% - 80px);
@@ -526,6 +527,8 @@ table td {
     height: auto;
     white-space: inherit;
     word-break: break-all;
+    height: 20px;
+    line-height: 20px;
   }
   .layui-table-view {
     border: none;
@@ -535,7 +538,7 @@ table td {
     content: '';
     display: inline-block;
     width: 80px;
-    line-height: 28px;
+    line-height: 20px;
   }
   #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(2)::before {
     content: '用户名：';
@@ -595,13 +598,13 @@ table td {
     content: "任务名称："
   }
   #LAY-my-task  + .layui-table-view .layui-table-body tr > td:nth-child(3)::before {
-    content: "创建人："
+    content: "主持："
   }
   #LAY-my-task  + .layui-table-view .layui-table-body tr > td:nth-child(4)::before {
-    content: "任务内容："
+    content: "做单要求："
   }
   #LAY-my-task  + .layui-table-view .layui-table-body tr > td:nth-child(5)::before {
-    content: "任务描述："
+    content: "佣金："
   }
   #LAY-my-task  + .layui-table-view .layui-table-body tr > td:nth-child(6)::before {
     content: "创建时间："
@@ -615,13 +618,13 @@ table td {
     content: "任务名称：";
   }
   #LAY-manager-list + .layui-table-view .layui-table-body tr > td:nth-child(3)::before {
-    content: "创建人：";
+    content: "主持：";
   }
   #LAY-manager-list + .layui-table-view .layui-table-body tr > td:nth-child(4)::before {
-    content: "任务内容：";
+    content: "做单要求：";
   }
   #LAY-manager-list + .layui-table-view .layui-table-body tr > td:nth-child(5)::before {
-    content: "任务描述：";
+    content: "佣金：";
   }
   #LAY-manager-list + .layui-table-view .layui-table-body tr > td:nth-child(6)::before {
     content: "创建时间：";
@@ -638,13 +641,13 @@ table td {
     content: "任务名称：";
   }
   #LAY-task-list  + .layui-table-view .layui-table-body tr > td:nth-child(3)::before {
-    content: "创建人：";
+    content: "主持：";
   }
   #LAY-task-list  + .layui-table-view .layui-table-body tr > td:nth-child(4)::before {
-    content: "任务内容：";
+    content: "做单要求：";
   }
   #LAY-task-list  + .layui-table-view .layui-table-body tr > td:nth-child(5)::before {
-    content: "任务描述：";
+    content: "佣金：";
   }
   #LAY-task-list  + .layui-table-view .layui-table-body tr > td:nth-child(6)::before {
     content: "创建时间：";
