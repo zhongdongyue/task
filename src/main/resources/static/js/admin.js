@@ -14,6 +14,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		form = layui.form,
 		layer = layui.layer,
 		element = layui.element;
+	var table = layui.table;
 	var menu = [];
 	var curMenu;
 	/*
@@ -145,7 +146,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
                     success: function (data) {
                         element.tabAdd('wenav_tab', {
                             title: title,
-                            content: '<div tab-id="' + id + '"class="weIframe"> ' + data + '</div>',
+                            content: '<div tab-id="' + id + '"class="weIframe" url="' + url + '"> ' + data + '</div>',
                             id: id
                         });
                         //当前窗口内容
@@ -173,7 +174,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 			sessionStorage.removeItem('menu');
 		}
 	};
-
+	
 	/*
 	 * @todo 监听右键事件,绑定右键菜单
 	 * 先取消默认的右键事件，再绑定菜单，触发不同的点击事件
@@ -225,6 +226,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 				item = parents.children('.layui-tab-content').children('.layui-tab-item'),
 				src = item.eq(index).find('iframe').attr("src");
 			item.eq(index).find('iframe').attr("src", src);
+            refresh($(this).attr("data-id"));
 		} else if(type == "other") {
 			var thisId = layId;
 			$('.layui-tab-title').find('li').each(function(i, o) {
