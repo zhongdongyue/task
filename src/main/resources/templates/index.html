@@ -233,10 +233,14 @@
     $(document).ready(function() {
 
         $(document.body).on('click','.layui-upload-img',function(){
-            $('#imageFullScreen').attr('src', $(this).attr('src'));
+            var srcImg = $(this).attr('src');
+            $('#imageFullScreen').attr('src',"");
             $('#imgPageContent').addClass('active');
-            $('#imageFullScreen').smartZoom('destroy')
-            $('#imageFullScreen').smartZoom({'containerClass':'zoomableContainer'});
+            $('#imageFullScreen').smartZoom('destroy');
+           setTimeout(function(){
+               $('#imageFullScreen').attr('src',srcImg );
+               $('#imageFullScreen').smartZoom({'containerClass':'zoomableContainer'});
+           }, 300)
         });
 
         $('#closeImgButtom').off('click').on('click',function(){
