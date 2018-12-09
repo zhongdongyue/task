@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/weadmin.css">
     <link rel="stylesheet" href="/i_ft/iconfont.css">
     <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
+    <script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 
@@ -162,41 +164,42 @@
         var layer = layui.layer;
         var jquery = layui.jquery;
         jquery("#user_info").on("click", function () {
-            layer.open({
-                type: 2,
-                title: "修改个人信息",
-                content: "/user/userEdit",
-                area: ["500px", "350px"],
-                btn: ["确定", "取消"],
-                yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe' + index];
-                    //监听提交
-                    iframeWindow.layui.form.on('submit(user_info)', function (data) {
-                        var field = data.field; //获取提交的字段
-                        jquery.ajax({
-                            type: 'PUT',
-                            url: "/api/users/info",
-                            contentType: 'application/json',
-                            data: JSON.stringify(
-                                data.field
-                            ),
-                            success: function (data, textStatus, jqXHR) {
-                                if (data.code == "200") {
-                                    location.href='./login';
-                                } else {
-                                    layer.close(index); //关闭弹层
-                                    layer.open({content: data.message, shade: [0.8, '#393D49']});
-                                }
-                            },
-                            dataType: "json"
-                        });
-                    });
-
-                    iframeWindow.layui.jquery("#user_info").click()
+            jquery.ajax({
+                type: 'GET',
+                async: false,
+                url: "/user/userEdit" + "?_t=" + new Date().getTime(),
+                success: function (data) {
+                    layer.open({
+                        type: 1,
+                        title: "修改个人信息",
+                        content: data,
+                        area: ["500px", "350px"],
+                        btn: ["确定", "取消"],
+                        yes: function (index) {
+                            //监听提交
+                            layui.form.on('submit(user_edit_ok)', function (data) {
+                                jquery.ajax({
+                                    type: 'PUT',
+                                    url: "/api/users/info",
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(
+                                        data.field
+                                    ),
+                                    success: function (data, textStatus, jqXHR) {
+                                        layer.close(index);
+                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                    },
+                                });
+                                // 取消自动刷新页面
+                                return false;
+                            });
+                            layui.jquery("#user_edit_ok").click()
+                        },
+                        success: function (e, t) {
+                        }
+                    })
                 },
-                success: function (e, t) {
-                }
-            })
+            });
         });
         jquery("#logo-wrap").on("click", function(){
             jquery("#tab-body").toggleClass("mini-show")
@@ -218,12 +221,4 @@
     });
 </script>
 </body>
-<!--Tab菜单右键弹出菜单-->
-<ul class="rightMenu" id="rightMenu">
-    <li data-type="fresh">刷新</li>
-    <li data-type="current">关闭当前</li>
-    <li data-type="other">关闭其它</li>
-    <li data-type="all">关闭所有</li>
-</ul>
-
 </html>

@@ -79,6 +79,7 @@ public class UserController {
     public ResponseData updatePassword(HttpSession session,@RequestBody User user) {
         User sessionUser = (User) session.getAttribute(SessionAttribute.USER);
         userService.updatePassword(sessionUser.getUsername(), user.getOldPwd(), user.getPassword(),user.getPhone());
+        session.setAttribute(SessionAttribute.USER, userService.getById(sessionUser.getId()));
         return ResponseData.success(HttpStatus.OK.value(), ResponseMessage.SUCCESS,null);
     }
 
