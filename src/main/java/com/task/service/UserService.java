@@ -100,4 +100,13 @@ public interface UserService {
     void applyPass(String userId);
 
     void applyRefuse(String userId);
+
+    /**
+     * 根据搜索内容查找搜索用户
+     * @param pageNum
+     * @param pageSize
+     * @param content
+     * @return
+     */
+    Pager<User> searchApplyUserByContent(int pageNum,int pageSize,String content);
 }

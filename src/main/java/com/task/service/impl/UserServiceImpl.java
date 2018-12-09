@@ -148,4 +148,11 @@ public class UserServiceImpl implements UserService {
         user.setStatus(2);
         userMapper.updateByPrimaryKey(user);
     }
+
+
+    @Override
+    public Pager<User> searchApplyUserByContent(int pageNum, int pageSize, String content) {
+        PageInfo<User> sqlPage = new PageInfo<>(userMapper.searchApplyUserByContent(pageNum,pageSize,content));
+        return new Pager<>(sqlPage.getPageNum(), sqlPage.getPageSize(), sqlPage.getTotal(), sqlPage.getList());
+    }
 }
