@@ -1,33 +1,11 @@
-<!DOCTYPE html>
-<html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<link rel="stylesheet" href="/css/font.css">
-		<link rel="stylesheet" href="/css/weadmin.css">
-		<link rel="stylesheet" href="/i_ft/iconfont.css">
-		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
-	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
-	</head>
-
-	<body>
-		<div class="weadmin-body">
-			<table id="LAY-apply-list" lay-filter="LAY-apply-list"></table>
-			<script type="text/html" id="table-apply-list">
-				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="i_ft i-querenyuanzhengqueduigoutijiaochenggongwancheng"></i>通过</a>
-				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="i_ft i-jujue"></i> 拒绝</a>
-			</script>
-		</div>
-<script src="/layui/layui.js" charset="utf-8"></script>
-<script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
-<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+<div class="weadmin-body">
+	<table id="LAY-apply-list" lay-filter="LAY-apply-list"></table>
+	<script type="text/html" id="table-apply-list">
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="i_ft i-querenyuanzhengqueduigoutijiaochenggongwancheng"></i>通过</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="i_ft i-jujue"></i> 拒绝</a>
+	</script>
+</div>
 
 <script>
 	var asdlfjasdf = 'asdfasdf'
@@ -68,20 +46,45 @@
 		});
         table.on("tool(LAY-apply-list)", function (e) {
             if ("edit" === e.event) {
-                layer.confirm("确认通过权限？", function (t) {
-                    jquery.ajax({
-                        type: 'POST',
-                        url: "/api/users/apply/pass/" + e.data.id,
-                        success: function (data, textStatus, jqXHR) {
-                            if (data.code == "200") {
-                                e.del(), layer.close(t)
-                            } else {
-                                layer.open({content: data.message, shade: [0.8, '#393D49']});
-                            }
-                        },
-                        dataType: "json"
-                    });
-                });
+                layer.open({
+                    type: 2,
+                    title: "权限编辑",
+                    content: "/user/adminEdit?userId=" + e.data.id,
+                    area: ["800px", "350px"],
+                    btn: ["确定", "取消"],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe'+ index];
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(update)', function(data){
+                            var field = data.field; //获取提交的字段
+                            jquery.ajax({
+                                type: 'PUT',
+                                url: "/api/users",
+                                data: JSON.stringify({
+                                    "id": field.userId,
+                                    "roleId": field.roleId,
+                                    "groupId": field.groupId,
+									"status": 0
+                                }),
+                                contentType: 'application/json',
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.code == "200") {
+                                        table.reload('LAY-apply-list'); //数据刷新
+                                        layer.close(index); //关闭弹层
+                                    } else {
+                                        layer.close(index); //关闭弹层
+                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                    }
+                                },
+                                dataType: "json"
+                            });
+                        });
+
+                        iframeWindow.layui.jquery("#admin_edit_submit").click()
+                    },
+                    success: function (e, t) {
+                    }
+                })
             }else if ("del" === e.event) {
                 layer.confirm("确认拒绝权限？", function (t) {
                     jquery.ajax({
@@ -101,6 +104,3 @@
         });
 	});
 </script>
-	</body>
-
-</html>

@@ -138,14 +138,20 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 			} else {
 				//该id不存在，新增一个Tab项
 				//console.log("<0");
-				element.tabAdd('wenav_tab', {
-					title: title,
-					content: '<iframe tab-id="' + id + '" frameborder="0" src="' + url + '" scrolling="yes" class="weIframe"></iframe>',
-					id: id
-				});
-				//当前窗口内容
-				setStorageMenu(title, url, id);
-
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+					async: false,
+                    success: function (data) {
+                        element.tabAdd('wenav_tab', {
+                            title: title,
+                            content: '<div tab-id="' + id + '"class="weIframe"> ' + data + '</div>',
+                            id: id
+                        });
+                        //当前窗口内容
+                        setStorageMenu(title, url, id);
+                    }
+                });
 			}
 			CustomRightClick(id); //绑定右键菜单
 			FrameWH(); //计算框架高度
@@ -173,14 +179,14 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	 * 先取消默认的右键事件，再绑定菜单，触发不同的点击事件
 	 */
 	function CustomRightClick(id) {
-		//取消右键 
+		//取消右键
 		$('.layui-tab-title li').on('contextmenu', function() {
 			return false;
 		})
 		$('.layui-tab-title,.layui-tab-title li').on('click', function() {
 			$('.rightMenu').hide();
 		});
-		//桌面点击右击 
+		//桌面点击右击
 		$('.layui-tab-title li').on('contextmenu', function(e) {
 			var aid = $(this).attr("lay-id"); //获取右键时li的lay-id属性
 			var popupmenu = $(".rightMenu");
@@ -245,7 +251,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	/*
 	 * @todo 弹出层，弹窗方法
 	 * layui.use 加载layui.define 定义的模块，当外部 js 或 onclick调用 use 内部函数时，需要在 use 中定义 window 函数供外部引用
-	 * http://blog.csdn.net/xcmonline/article/details/75647144 
+	 * http://blog.csdn.net/xcmonline/article/details/75647144
 	 */
 	/*
 	    参数解释：
@@ -415,7 +421,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		login = 1;
 		localStorage.setItem('login', login);
 	});
-	
+
 	/*
 	 *Tab加载后刷新
 	 * 判断是刷新后第一次点击时，刷新frame子页面
@@ -423,15 +429,15 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	window.reloadTab = function(which){
 		var len = $('.layui-tab-title').children('li').length;
 		var layId = $(which).attr('lay-id');
-		var i=1;	   
+		var i=1;
 		if($(which).attr('data-bit')){
 			return false; //判断页面打开后第一次点击，执行刷新
 		}else{
-			$(which).attr('data-bit',i);  	
+			$(which).attr('data-bit',i);
 			var frame = $('.weIframe[tab-id='+layId+']');
 			frame.attr('src', frame.attr('src'));
 			console.log("reload:"+$(which).attr('data-bit'));
-		} 
+		}
     }
 	/**
 	 *@todo Frame内部的按钮点击打开其他frame的tab

@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>管理员列表-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<link rel="stylesheet" href="/css/font.css">
-		<link rel="stylesheet" href="/css/weadmin.css">
-		<link rel="stylesheet" href="/i_ft/iconfont.css">
-		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
-	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
-	</head>
-
-	<body>
-		<div class="weadmin-body">
-			<div class="weadmin-block">
-				<button class="layui-btn" id="add_task"><i class="layui-icon"></i>发布任务</button>
-			</div>
-			<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
-			<script type="text/html" id="table-manager-list">
-				<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
-				<a class="layui-btn layui-btn-info layui-btn-xs" lay-event="info"><i class="i_ft i-xiangqing"></i> 详情</a>
-			</script>
-		</div>
-<script src="/layui/layui.js" charset="utf-8"></script>
-<script src="/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
-<script src="/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+<div class="weadmin-body">
+	<div class="weadmin-block">
+		<button class="layui-btn" id="add_task"><i class="layui-icon"></i>发布任务</button>
+	</div>
+	<table id="LAY-manager-list" lay-filter="LAY-manager-list"></table>
+	<script type="text/html" id="table-manager-list">
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+		<a class="layui-btn layui-btn-info layui-btn-xs" lay-event="info"><i class="i_ft i-xiangqing"></i> 详情</a>
+	</script>
+</div>
 
 <script>
 	layui.use(['table','jquery','layer'], function () {
@@ -86,96 +64,116 @@
                     });
                 });
             }else if ("edit" === e.event) {
-                layer.open({
-                    type: 2,
-                    title: "编辑任务",
-                    content: "/task/edit?taskId=" + e.data.id,
-                    area: ["800px", "90%"],
-                    btn: ["确定", "取消"],
-                    yes: function (index, layero) {
-                        var iframeWindow = window['layui-layer-iframe'+ index];
-                        //监听提交
-                        iframeWindow.layui.form.on('submit(update)', function(data){
-                            var field = data.field; //获取提交的字段
-                            jquery.ajax({
-                                type: 'PUT',
-                                url: "/api/tasks",
-                                data: JSON.stringify({
-                                    "id": field.taskId,
-                                    "name": field.name,
-                                    "description": field.description,
-                                    "content": field.content,
-                                }),
-                                contentType: 'application/json',
-                                success: function (data, textStatus, jqXHR) {
-                                    if (data.code == "200") {
-                                        table.reload('LAY-manager-list'); //数据刷新
-                                        layer.close(index); //关闭弹层
-                                    } else {
-                                        layer.close(index); //关闭弹层
-                                        layer.open({content: data.message, shade: [0.8, '#393D49']});
-                                    }
-                                },
-                                dataType: "json"
-                            });
-                        });
+                $.ajax({
+                    type: 'GET',
+                    url: "/task/edit?taskId=" + e.data.id,
+                    async: false,
+                    success: function (data) {
+                        layer.open({
+                            type: 1,
+                            title: "编辑任务",
+                            content: data,
+                            area: ["800px", "90%"],
+                            btn: ["确定", "取消"],
+                            yes: function (index, layero) {
+                                //监听提交
+                                layui.form.on('submit(update)', function(data){
+                                    var field = data.field; //获取提交的字段
+                                    jquery.ajax({
+                                        type: 'PUT',
+                                        url: "/api/tasks",
+                                        data: JSON.stringify({
+                                            "id": field.taskId,
+                                            "name": field.name,
+                                            "description": field.description,
+                                            "content": field.content,
+                                        }),
+                                        contentType: 'application/json',
+                                        success: function (data, textStatus, jqXHR) {
+                                            if (data.code == "200") {
+                                                table.reload('LAY-manager-list'); //数据刷新
+                                                layer.close(index); //关闭弹层
+                                            } else {
+                                                layer.close(index); //关闭弹层
+                                                layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                            }
+                                        },
+                                        dataType: "json"
+                                    });
+                                    // 取消自动刷新页面
+                                    return false;
+                                });
 
-                        iframeWindow.layui.jquery("#task_edit_submit").click()
-                    },
-                    success: function (e, t) {
+                                layui.jquery("#task_edit_submit").click()
+                            },
+                            success: function (e, t) {
+                            }
+                        })
                     }
-                })
+                });
             }else if("info" === e.event){
-                layer.open({
-                    type: 2,
-                    title: "任务详情",
-                    content: "/task/info?taskId=" + e.data.id,
-                    area: ["800px", "90%"],
-                    yes: function (index, layero) {
-                    },
-                    success: function (e, t) {
+                $.ajax({
+                    type: 'GET',
+                    url: "/task/info?taskId=" + e.data.id,
+                    async: false,
+                    success: function (data) {
+                        layer.open({
+                            type: 1,
+                            title: "任务详情",
+                            content: data,
+                            area: ["800px", "90%"],
+                            yes: function (index, layero) {
+                            },
+                            success: function (e, t) {
+                            }
+                        })
                     }
-                })
+                });
 			}
         });
         jquery("#add_task").on("click", function () {
-            layer.open({
-                type: 2,
-                title: "发布任务",
-                content: "/task/add",
-                area: ["800px", "90%"],
-                btn: ["确定", "取消"],
-                yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe'+ index];
-                    //监听提交
-                    iframeWindow.layui.form.on('submit(add_task)', function(data){
-                        var field = data.field; //获取提交的字段
-						debugger;
-                        jquery.ajax({
-                            type: 'POST',
-                            url: "/api/tasks",
-                            data: field,
-                            success: function (data, textStatus, jqXHR) {
-                                if (data.code == "200") {
-                                    table.reload('LAY-manager-list'); //数据刷新
-                                    layer.close(index); //关闭弹层
-                                } else {
-                                    layer.close(index); //关闭弹层
-                                    layer.open({content: data.message, shade: [0.8, '#393D49']});
-                                }
-                            },
-                            dataType: "json"
-                        });
-                    });
+            $.ajax({
+                type: 'GET',
+                url: "/task/add",
+                async: false,
+                success: function (data) {
+                    layer.open({
+                        type: 1,
+                        title: "发布任务",
+                        content: data,
+                        area: ["800px", "90%"],
+                        btn: ["确定", "取消"],
+                        yes: function (index, layero) {
+                            //监听提交
+                            layui.form.on('submit(add_task_form)', function(data){
 
-                    iframeWindow.layui.jquery("#add_task").click()
-                },
-                success: function (e, t) {
+                                var field = data.field; //获取提交的字段
+                                jquery.ajax({
+                                    type: 'POST',
+                                    url: "/api/tasks",
+                                    data: field,
+                                    success: function (data, textStatus, jqXHR) {
+                                        if (data.code == "200") {
+                                            table.reload('LAY-manager-list'); //数据刷新
+                                            layer.close(index); //关闭弹层
+                                        } else {
+                                            layer.close(index); //关闭弹层
+                                            layer.open({content: data.message, shade: [0.8, '#393D49']});
+                                        }
+                                    },
+                                    dataType: "json"
+                                });
+                                // 取消自动刷新页面
+                                return false;
+                            });
+
+                            layui.jquery("#add_task_form").click()
+                        },
+                        success: function (e, t) {
+                        }
+                    })
                 }
-            })
+            });
         });
 	});
 </script>
-	</body>
-
-</html>
