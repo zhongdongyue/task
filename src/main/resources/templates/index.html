@@ -133,6 +133,11 @@
     </div>
     <div id="close-left-nav" class="close-left-nav"></div>
 </div>
+<div id="imgPageContent" class="active">
+    <div id="imgContainer">
+        <div id="smartZoomContainer1544367234546" class="zoomableContainer" style="overflow: hidden; position: relative; top: 0px; left: 0px; width: 100%; height: 100%;"><div id="closeImgButtom" class="close-img">×</div><img id="imageFullScreen" src="images/bg.png" style="transition: all 0s ease-out 0s; transform: translate3d(160px, 2.5px, 0px) scale3d(0.44, 0.44, 1); cursor: default; transform-origin: 0px 0px 0px; visibility: visible;"></div>
+    </div>
+</div>
 <!-- <div class="x-slide_left"></div> -->
 <!-- 左侧菜单结束 -->
 <!-- 右侧主体开始 -->
@@ -161,6 +166,7 @@
     layui.use(['table','jquery','layer'], function () {
         var table = layui.table;
         var $ = layui.$;
+        window.jQuery = layui.jquery;
         var layer = layui.layer;
         var jquery = layui.jquery;
         jquery("#user_info").on("click", function () {
@@ -219,6 +225,86 @@
         });
         jquery("#task-lobby-a").click();
     });
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/imgShow.js"></script>
+<script>
+
+    $(document).ready(function() {
+
+        $(document.body).on('click','.layui-upload-img',function(){
+            $('#imageFullScreen').attr('src', $(this).attr('src'));
+            $('#imgPageContent').addClass('active');
+            $('#imageFullScreen').smartZoom('destroy')
+            $('#imageFullScreen').smartZoom({'containerClass':'zoomableContainer'});
+        });
+
+        $('#closeImgButtom').off('click').on('click',function(){
+            $('#imgPageContent').removeClass('active');
+        });
+
+        $('#imageFullScreen').smartZoom({'containerClass':'zoomableContainer'});
+
+        // $('#topPositionMap,#leftPositionMap,#rightPositionMap,#bottomPositionMap').bind("click", moveButtonClickHandler);
+        //
+        // $('#zoomInButton,#zoomOutButton').bind("click", zoomButtonClickHandler);
+        //
+        //
+        //
+        // function zoomButtonClickHandler(e){
+        //
+        //     var scaleToAdd = 0.8;
+        //
+        //     if(e.target.id == 'zoomOutButton')
+        //
+        //         scaleToAdd = -scaleToAdd;
+        //
+        //     $('#imageFullScreen').smartZoom('zoom', scaleToAdd);
+        //
+        // }
+        //
+        // function moveButtonClickHandler(e){
+        //
+        //     var pixelsToMoveOnX = 0;
+        //
+        //     var pixelsToMoveOnY = 0;
+        //
+        //
+        //
+        //     switch(e.target.id){
+        //
+        //         case "leftPositionMap":
+        //
+        //             pixelsToMoveOnX = 50;
+        //
+        //             break;
+        //
+        //         case "rightPositionMap":
+        //
+        //             pixelsToMoveOnX = -50;
+        //
+        //             break;
+        //
+        //         case "topPositionMap":
+        //
+        //             pixelsToMoveOnY = 50;
+        //
+        //             break;
+        //
+        //         case "bottomPositionMap":
+        //
+        //             pixelsToMoveOnY = -50;
+        //
+        //             break;
+        //
+        //     }
+        //
+        //     $('#imageFullScreen').smartZoom('pan', pixelsToMoveOnX, pixelsToMoveOnY);
+        //
+        // }
+
+    });
+
 </script>
 </body>
 </html>
