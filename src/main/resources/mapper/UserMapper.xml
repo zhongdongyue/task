@@ -123,11 +123,9 @@
     LEFT JOIN `group`  g ON u.group_id = g.id
     LEFT JOIN role r ON u.role_id = r.id
     WHERE  u.status = 1
-    <if test="null!= content">
-      AND u.username LIKE CONCAT('%','${content}','%')
+    <if test='null!= content and content!=""'>
+      AND (u.username LIKE CONCAT('%','${content}','%') OR u.phone LIKE CONCAT('%','${content}','%'))
     </if>
-    <if test="null!= content">
-      OR u.phone LIKE CONCAT('%','${content}','%')
-    </if>
+
   </select>
 </mapper>
