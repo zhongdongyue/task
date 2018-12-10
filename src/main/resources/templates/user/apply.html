@@ -1,5 +1,9 @@
 
 <div class="weadmin-body">
+	<div class="search-button-wrap">
+		<input type="text" id="search-input-value">
+		<button id="search-button">搜索</button>
+	</div>
 	<table id="LAY-apply-list" lay-filter="LAY-apply-list"></table>
 	<script type="text/html" id="table-apply-list">
 		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="i_ft i-querenyuanzhengqueduigoutijiaochenggongwancheng"></i>通过</a>
@@ -8,18 +12,28 @@
 </div>
 
 <script>
-	var asdlfjasdf = 'asdfasdf'
 	layui.use(['table','jquery','layer'], function () {
 		var table = layui.table;
         var $ = layui.$;
         var layer = layui.layer;
         var jquery = layui.jquery;
+        $('#search-button').on('click',function(){
+            table.reload('LAY-apply-list', {
+                where: {
+                	content: $('#search-input-value').val()
+				} //设定异步数据接口的额外参数
+            });
+		});
+        $('#search-input-value').on('keyup',function(e){
+            if(e.keyCode === 13){
+                $('#search-button').click();
+			}
+		});
+
+
 		table.render({
 			elem: "#LAY-apply-list",
-			url: "/api/users/applys",
-			where: {
-			    type: asdlfjasdf
-			},
+			url: "/api/users/applys/search",
 			page: true, //开启分页
 			cols: [
 				[ {

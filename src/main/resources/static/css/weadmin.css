@@ -881,3 +881,18 @@ iframe {
   cursor: pointer;
   text-shadow: 0 0 3px #fff;
 }
+.search-button-wrap input {
+  width: 150px;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 4px;
+  border: 1px solid #cccccc;
+}
+.search-button-wrap button {
+  background-color: #1E9FFF;
+  border: 1px solid #1E9FFF;
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 0 8px;
+  line-height: 22px;
+}
