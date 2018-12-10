@@ -560,22 +560,22 @@ table td {
     width: 80px;
     line-height: 20px;
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(2)::before {
+  [id|=LAY-user-list] + .layui-table-view .layui-table-body tr > td:nth-child(2)::before {
     content: '用户名：';
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(3)::before {
+  [id|=LAY-user-list]+ .layui-table-view .layui-table-body tr > td:nth-child(3)::before {
     content: '手机号：';
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(4)::before {
+  [id|=LAY-user-list] + .layui-table-view .layui-table-body tr > td:nth-child(4)::before {
     content: '所属组：';
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(5)::before {
+  [id|=LAY-user-list] + .layui-table-view .layui-table-body tr > td:nth-child(5)::before {
     content: '角色：';
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(6)::before {
+  [id|=LAY-user-list] + .layui-table-view .layui-table-body tr > td:nth-child(6)::before {
     content: '创建时间：';
   }
-  #LAY-user-list + .layui-table-view .layui-table-body tr > td:nth-child(7) {
+  [id|=LAY-user-list] + .layui-table-view .layui-table-body tr > td:nth-child(7) {
     text-align: right;
   }
 
