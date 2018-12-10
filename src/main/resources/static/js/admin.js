@@ -9,7 +9,7 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
+layui.define(['jquery', 'form', 'layer', "table", 'element'], function(exports) {
 	var $ = layui.jquery,
 		form = layui.form,
 		layer = layui.layer,
@@ -154,7 +154,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
                     }
                 });
 			}
-			CustomRightClick(id); //绑定右键菜单
+			CustomRightClick(id); //绑定右键菜单 和左击事件
 			FrameWH(); //计算框架高度
 
 		},
@@ -202,6 +202,11 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 			//alert("右键菜单")
 			return false;
 		});
+
+		$('#tabName').off('click').on('click','li',function(){
+			refresh($(this).attr('lay-id'));
+		})
+
 	}
 	$("#rightMenu li").click(function() {
 		var type = $(this).attr("data-type");
@@ -238,6 +243,11 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		}
 		$('.rightMenu').hide();
 	});
+
+	function refresh(tab_id) {
+		var id = $('[tab-id="'+ tab_id +'"]').find('[lay-filter]').attr('id');
+        table.reload(id);
+    }
 
 	/*
 	 * @todo 重新计算iframe高度
@@ -445,5 +455,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	 *@todo Frame内部的按钮点击打开其他frame的tab
 	 */
 
+    $("#task-lobby-a").click();
 	exports('admin', {});
 });
