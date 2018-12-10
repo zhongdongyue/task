@@ -246,7 +246,7 @@ layui.define(['jquery', 'form', 'layer', "table", 'element'], function(exports) 
 	});
 
 	function refresh(tab_id) {
-		var id = $('[tab-id="'+ tab_id +'"]').find('[lay-filter]').attr('id');
+		var id = $('.weIframe[tab-id="'+ tab_id +'"]').find('[lay-filter]').attr('id');
         table.reload(id);
     }
 
