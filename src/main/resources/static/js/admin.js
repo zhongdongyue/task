@@ -455,7 +455,7 @@ layui.define(['jquery', 'form', 'layer', "table", 'element'], function(exports) 
 	/**
 	 *@todo Frame内部的按钮点击打开其他frame的tab
 	 */
-	if(sessionStorage.menu == "[]" || sessionStorage.menu == ""){
+	if(sessionStorage.menu == "[]" || !sessionStorage.menu){
         $("#task-lobby-a").click();
     }
 	exports('admin', {});
