@@ -90,7 +90,7 @@
     from task t
     LEFT JOIN user u ON t.creator_id = u.id
     where DATE_SUB(now(), INTERVAL 7 DAY) &lt;= date(t.create_time) AND
-    t.status = 0
+    t.status IN (0,1)
   </select>
 
 
